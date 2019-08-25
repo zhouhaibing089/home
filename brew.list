@@ -1,0 +1,10 @@
+coreutils
+gettext
+git
+gnu-tar
+libevent
+ncurses
+openssl
+pcre2
+reattach-to-user-namespace
+tmux
