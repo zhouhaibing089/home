@@ -2,7 +2,7 @@ set number
 syntax on
 
 set backspace=2
-set ruler
+set cc=80
 
 " Always show statusline
 set laststatus=2
