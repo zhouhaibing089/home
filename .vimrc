@@ -1,7 +1,6 @@
 set number
 syntax on
 
-set backspace=2
 set cc=80
 
 " Always show statusline
@@ -19,6 +18,10 @@ Plug 'scrooloose/nerdtree'
 Plug 'mhinz/vim-startify'
 " vim plugin for Go programming language
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Auto pair
+Plug 'jiangmiao/auto-pairs'
+" Rust plugin
+Plug 'rust-lang/rust.vim'
 " Initialize plugin system
 call plug#end()
 
