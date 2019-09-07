@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+if [[ $# -eq 0  ]]; then
+  p=$(pwd)
+else
+  p=$(cd $1; pwd)
+fi
+
+ip=$(pinky  | grep -v tmux | grep -v Where  | awk '{print $5}')
+
+ssh -i ~/.ssh/id_rsa -l haibzhou ${ip} -- /usr/local/bin/code --folder-uri "vscode-remote://ssh-remote+dev${p}"
