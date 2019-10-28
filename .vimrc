@@ -27,6 +27,8 @@ call plug#end()
 
 " toggle NERDTree
 autocmd VimEnter * NERDTree | wincmd p
+" show hidden file
+let NERDTreeShowHidden=1
 
 set bg=dark
 colorscheme solarized
