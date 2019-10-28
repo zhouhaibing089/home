@@ -25,5 +25,8 @@ Plug 'rust-lang/rust.vim'
 " Initialize plugin system
 call plug#end()
 
+" toggle NERDTree
+autocmd VimEnter * NERDTree | wincmd p
+
 set bg=dark
 colorscheme solarized
