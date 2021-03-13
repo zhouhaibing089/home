@@ -23,7 +23,7 @@ alias k53="kubectl --context=53"
 export ZSH="/Users/haibzhou/.oh-my-zsh"
 export SOLARIZED_THEME=dark
 
-eval $(gdircolors ${HOME}/dircolors.256dark)
+eval $(gdircolors ${HOME}/.dircolors.dark)
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
