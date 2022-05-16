@@ -16,8 +16,19 @@ alias k32="kubectl --context=32"
 alias k31="kubectl --context=31"
 alias k51="kubectl --context=51"
 alias k75="kubectl --context=75"
-alias k77="kubectl --context=77"
+alias k90="kubectl --context=90"
 alias k53="kubectl --context=53"
+
+if [[ ${TMUX} ]]; then
+  wname=$(tmux display-message -p '#W')
+  kubectl config get-contexts ${wname} &> /dev/null
+  if [ $? -eq 0 ]; then
+    # alias k="kubectl --context=${wname}"
+    function k() { kubectl "$@" --context=${wname} }
+    alias t="tess --context=${wname}"
+    alias tmctl="tmctl --context=${wname}"
+  fi
+fi
 
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/haibzhou/.oh-my-zsh"
@@ -39,8 +50,14 @@ ZSH_THEME="blinks"
 plugins=(git golang osx kube-ps1)
 
 source $ZSH/oh-my-zsh.sh
-PROMPT=$PROMPT'$(kube_ps1) '
-RPROMPT='[%*]'
+
+type k &> /dev/null
+if [ $? -eq 0 ]; then
+  echo "k is aliased"
+else
+  PROMPT=$PROMPT'$(kube_ps1) '
+  RPROMPT='[%*]'
+fi
 
 # TMOUT=1
 # TRAPALRM() {
