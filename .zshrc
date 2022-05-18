@@ -47,7 +47,7 @@ ZSH_THEME="blinks"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git golang osx kube-ps1)
+plugins=(git golang macos kube-ps1)
 
 source $ZSH/oh-my-zsh.sh
 
