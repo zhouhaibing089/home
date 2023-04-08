@@ -1,23 +1,9 @@
 # If you come from bash you might have to change your $PATH.
 export GOPATH=${HOME}/gopath
 export GOROOT=${HOME}/go
-export GOPRIVATE=*.corp.ebay.com,tess.io,golibs.tess.io
 export PATH=$HOME/bin:${GOROOT}/bin:${GOPATH}/bin:${HOME}/.cargo/bin:/usr/local/bin:$PATH
 
-source ${HOME}/rc/default
-
-alias oops='mp-ssh ops-1687998.stratus.slc.ebay.com'
 alias tmux='tmux -2'
-alias modgo="GO111MODULE=on go"
-alias fkubectl="KUBECONFIG=${HOME}/.kube/config-fcp-dev kubectl"
-alias kkubectl="KUBECONFIG=${HOME}/.kube/config-kind kubectl"
-alias k33="kubectl --context=33"
-alias k32="kubectl --context=32"
-alias k31="kubectl --context=31"
-alias k51="kubectl --context=51"
-alias k75="kubectl --context=75"
-alias k90="kubectl --context=90"
-alias k53="kubectl --context=53"
 
 if [[ ${TMUX} ]]; then
   wname=$(tmux display-message -p '#W')
