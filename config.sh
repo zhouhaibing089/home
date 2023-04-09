@@ -16,3 +16,9 @@ ln -s $(pwd)/.tmux/colors ${HOME}/.tmux/colors
 rm -f ${HOME}/.dircolors.dark && ln -s $(pwd)/dircolors.256dark ${HOME}/.dircolors.dark
 # zshrc file
 rm -f ${HOME}/.zshrc && ln -s $(pwd)/.zshrc ${HOME}/.zshrc
+# fontconfigs
+if [[ $(uname) == "Linux" ]]; then
+  mkdir -p ${HOME}/.config/fontconfig
+  rm -f ${HOME}/.config/fontconfig/fonts.conf
+  ln -s $(pwd)/fonts.conf ${HOME}/.config/fontconfig/fonts.conf
+fi
