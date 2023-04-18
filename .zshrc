@@ -1,15 +1,15 @@
-if [[ -d ${HOME}/go/bin && -z ${TMUX} ]]; then
+if [[ -d ${HOME}/go/bin && ! ${PATH} =~ ".*${HOME}/go/bin.*" ]]; then
   export GOROOT=${HOME}/go
   export PATH=${GOROOT}/bin:${PATH}
 fi
-if [[ -d ${HOME}/gopath && -z ${TMUX} ]]; then
+if [[ -d ${HOME}/gopath && ! ${PATH} =~ ".*${HOME}/gopath/bin.*" ]]; then
   export GOPATH=${HOME}/gopath
   export PATH=${GOPATH}/bin:${PATH}
 fi
-if [[ -d ${HOME}/.cargo && -z ${TMUX} ]]; then
+if [[ -d ${HOME}/.cargo && ! ${PATH} =~ ".*${HOME}/.cargo/bin.*" ]]; then
   export PATH=${HOME}/.cargo/bin:${PATH}
 fi
-if [[ -z ${TMUX} ]]; then
+if [[ ! ${PATH} =~ ".*${HOME}/bin.*" ]]; then
   export PATH=${HOME}/bin:${PATH}
 fi
 
