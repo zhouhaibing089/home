@@ -1,15 +1,17 @@
-if [[ -d ${HOME}/go/bin ]]; then
+if [[ -d ${HOME}/go/bin && -z ${TMUX} ]]; then
   export GOROOT=${HOME}/go
   export PATH=${GOROOT}/bin:${PATH}
 fi
-if [[ -d ${HOME}/gopath ]]; then
+if [[ -d ${HOME}/gopath && -z ${TMUX} ]]; then
   export GOPATH=${HOME}/gopath
   export PATH=${GOPATH}/bin:${PATH}
 fi
-if [[ -d ${HOME}/.cargo ]]; then
+if [[ -d ${HOME}/.cargo && -z ${TMUX} ]]; then
   export PATH=${HOME}/.cargo/bin:${PATH}
 fi
-export PATH=$HOME/bin:$PATH
+if [[ -z ${TMUX} ]]; then
+  export PATH=${HOME}/bin:${PATH}
+fi
 
 alias tmux='tmux -2'
 
