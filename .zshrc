@@ -1,8 +1,15 @@
-export GOPATH=${HOME}/gopath
-# Unless we installed go version manually
-# export GOROOT=${HOME}/go
-# export PATH=${GOOROOT}/bin:${PATH}
-export PATH=$HOME/bin:${GOPATH}/bin:${HOME}/.cargo/bin:$PATH
+if [[ -d ${HOME}/go/bin ]]; then
+  export GOROOT=${HOME}/go
+  export PATH=${GOROOT}/bin:${PATH}
+fi
+if [[ -d ${HOME}/gopath ]]; then
+  export GOPATH=${HOME}/gopath
+  export PATH=${GOPATH}/bin:${PATH}
+fi
+if [[ -d ${HOME}/.cargo ]]; then
+  export PATH=${HOME}/.cargo/bin:${PATH}
+fi
+export PATH=$HOME/bin:$PATH
 
 alias tmux='tmux -2'
 
