@@ -1,3 +1,9 @@
+# whatever comes from the work setup, let it be imported first (so we can
+# override later)
+if [[ ! ${TMUX} && -f ${HOME}/.zshrc.work ]]; then
+  source ${HOME}/.zshrc.work
+fi
+
 if [[ -d ${HOME}/go/bin ]]; then
   if [[ -f ${HOME}/go/bin/go ]]; then
     # Go installed manually
@@ -36,9 +42,6 @@ else
   plugins=(git golang macos kube-ps1)
 fi
 
-if [[ -f ${HOME}/.zshrc.work ]]; then
-  source ${HOME}/.zshrc.work
-fi
 if [[ $(uname) == "Linux" ]]; then
   eval $(dircolors ${HOME}/.dircolors.dark)
 else
