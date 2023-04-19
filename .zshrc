@@ -52,6 +52,9 @@ else
   plugins=(git golang macos kube-ps1)
 fi
 
+if [[ -f ${HOME}/.zshrc.work ]]; then
+  source ${HOME}/.zshrc.work
+fi
 source $ZSH/oh-my-zsh.sh
 
 type k &>/dev/null
