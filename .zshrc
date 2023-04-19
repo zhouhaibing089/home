@@ -38,12 +38,6 @@ fi
 export ZSH="${HOME}/.oh-my-zsh"
 export SOLARIZED_THEME=dark
 
-if [[ $(uname) == "Linux" ]]; then
-  eval $(dircolors ${HOME}/.dircolors.dark)
-else
-  eval $(gdircolors ${HOME}/.dircolors.dark)
-fi
-
 ZSH_THEME="blinks"
 
 if [[ $(uname) == "Linux" ]]; then
@@ -55,6 +49,12 @@ fi
 if [[ -f ${HOME}/.zshrc.work ]]; then
   source ${HOME}/.zshrc.work
 fi
+if [[ $(uname) == "Linux" ]]; then
+  eval $(dircolors ${HOME}/.dircolors.dark)
+else
+  eval $(gdircolors ${HOME}/.dircolors.dark)
+fi
+
 source $ZSH/oh-my-zsh.sh
 
 type k &>/dev/null
