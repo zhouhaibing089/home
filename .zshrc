@@ -1,9 +1,18 @@
-if [[ -d ${HOME}/go/bin && ! ${PATH} =~ ".*${HOME}/go/bin.*" ]]; then
-  export GOROOT=${HOME}/go
-  export PATH=${GOROOT}/bin:${PATH}
+if [[ -d ${HOME}/go/bin ]]; then
+  if [[ -f ${HOME}/go/bin/go ]]; then
+    # Go installed manually
+    export GOROOT=${HOME}/go
+  else
+    export GOPATH=${HOME}/go
+  fi
+  if [[ ! ${PATH} =~ ".*${HOME}/go/bin.*" ]]; then
+    export PATH=${HOME}/go/bin:${PATH}
+  fi
 fi
-if [[ -d ${HOME}/gopath && ! ${PATH} =~ ".*${HOME}/gopath/bin.*" ]]; then
+if [[ -d ${HOME}/gopath ]]; then
   export GOPATH=${HOME}/gopath
+fi
+if [[ -n ${GOPATH} && ! ${PATH} =~ ".*${GOPATH}/bin.*" ]]; then
   export PATH=${GOPATH}/bin:${PATH}
 fi
 if [[ -d ${HOME}/.cargo && ! ${PATH} =~ ".*${HOME}/.cargo/bin.*" ]]; then
