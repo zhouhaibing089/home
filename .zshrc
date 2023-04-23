@@ -33,6 +33,7 @@ alias tmux='tmux -2'
 # Path to your oh-my-zsh installation.
 export ZSH="${HOME}/.oh-my-zsh"
 export SOLARIZED_THEME=dark
+export EDITOR=vim
 
 ZSH_THEME="blinks"
 
@@ -53,7 +54,26 @@ if [[ ${TMUX} ]]; then
   kubectl config get-contexts ${wname} &>/dev/null
   if [[ $? -eq 0 ]]; then
     function k() {
-      kubectl "$@" --context=${wname}
+      # TODO: I'm pretty sure there is a better way to do this!
+      KUBECTL_ARGS_1=()
+      KUBECTL_ARGS_2=()
+      KUBECTL_HAS_ARGS_2=false
+      for p in ${@}; do
+        if [[ $p == "--" && ${KUBECTL_ARGS_2} != true ]]; then
+          KUBECTL_HAS_ARGS_2=true
+          continue
+        fi
+        if [[ ${KUBECTL_HAS_ARGS_2} = true ]]; then
+          KUBECTL_ARGS_2+=(${p})
+        else
+          KUBECTL_ARGS_1+=(${p})
+        fi
+      done
+      if [[ ${KUBECTL_HAS_ARGS_2} = true ]]; then
+        kubectl ${KUBECTL_ARGS_1} --context=${wname} -- ${KUBECTL_ARGS_2}
+      else
+        kubectl ${KUBECTL_ARGS_1} --context=${wname}
+      fi
     }
   fi
 fi
