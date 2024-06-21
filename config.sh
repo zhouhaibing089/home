@@ -14,6 +14,7 @@ mkdir -p ${HOME}/.tmux
 ln -s $(pwd)/.tmux/colors ${HOME}/.tmux/colors
 # shell colors
 rm -f ${HOME}/.dircolors.dark && ln -s $(pwd)/dircolors.256dark ${HOME}/.dircolors.dark
+rm -f ${HOME}/.dircolors.light && ln -s $(pwd)/.dircolors.light ${HOME}/.dircolors.light
 # zshrc file
 rm -f ${HOME}/.zshrc && ln -s $(pwd)/.zshrc ${HOME}/.zshrc
 if [[ $(uname) == "Linux" ]]; then

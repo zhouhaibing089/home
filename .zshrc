@@ -32,7 +32,15 @@ alias tmux='tmux -2'
 
 # Path to your oh-my-zsh installation.
 export ZSH="${HOME}/.oh-my-zsh"
-export SOLARIZED_THEME=dark
+if [[ $(uname -s) == Linux ]]; then
+  if [[ $(gsettings get org.gnome.desktop.interface color-scheme) == *default* ]]; then
+    export SOLARIZED_THEME=light
+  else
+    export SOLARIZED_THEME=dark
+  fi
+else
+  export SOLARIZED_THEME=dark
+fi
 export EDITOR=vim
 
 ZSH_THEME="blinks"
@@ -44,7 +52,11 @@ else
 fi
 
 if [[ $(uname) == "Linux" ]]; then
-  eval $(dircolors ${HOME}/.dircolors.dark)
+  if [[ $(gsettings get org.gnome.desktop.interface color-scheme) == *default* ]]; then
+    eval $(dircolors ${HOME}/.dircolors.light)
+  else
+    eval $(dircolors ${HOME}/.dircolors.dark)
+  fi
 else
   eval $(gdircolors ${HOME}/.dircolors.dark)
 fi
