@@ -67,7 +67,7 @@ if [[ ${TMUX} ]]; then
   if [[ $? -eq 0 ]]; then
     # may require proxy
     if [[ -f ${HOME}/bin/auto_proxy ]]; then
-      ${HOME}/bin/auto_proxy ${wname}
+      source ${HOME}/bin/auto_proxy ${wname}
     fi
     function k() {
       # TODO: I'm pretty sure there is a better way to do this!
