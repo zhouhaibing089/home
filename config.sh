@@ -27,3 +27,9 @@ if [[ $(uname) == "Linux" ]]; then
   rm -f ${HOME}/.config/zathura/zathurarc
   ln -s $(pwd)/zathurarc ${HOME}/.config/zathura/zathurarc
 fi
+
+# zed settings
+if [[ -f ${HOME}/.config/zed/settings.json ]]; then
+  rm -f ${HOME}/.config/zed/settings.json
+  ln -s $(pwd)/zed/settings.json ${HOME}/.config/zed/settings.json
+fi
