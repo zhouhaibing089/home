@@ -43,7 +43,9 @@ else
 fi
 export EDITOR=vim
 
-ZSH_THEME="blinks"
+if [[ ${ZED_TERM} != "true" ]]; then
+  ZSH_THEME="blinks"
+fi
 
 if [[ $(uname) == "Linux" ]]; then
   plugins=(git golang kube-ps1)

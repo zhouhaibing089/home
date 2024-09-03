@@ -12,11 +12,15 @@ set statusline=%F
 " Use 256 colours
 set t_Co=256
 " set background to be dark
-set bg=dark
+if empty($ZED_TERM)
+  set bg=dark
+endif
 " set maxmempattern higher
 set mmp=2000
 " use solarized color scheme
-colorscheme solarized
+if empty($ZED_TERM)
+  colorscheme solarized
+endif
 
 " Use ctrl-[hjkl] to select the active split!
 nmap <silent> <c-k> :wincmd k<CR>
