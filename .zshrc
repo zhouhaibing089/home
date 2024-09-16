@@ -43,7 +43,7 @@ else
 fi
 export EDITOR=vim
 
-if [[ ${ZED_TERM} != "true" ]]; then
+if [[ ${ZED_TERM} != "true" && ${VSCODE_INJECTION} != "1" ]]; then
   ZSH_THEME="blinks"
 fi
 
