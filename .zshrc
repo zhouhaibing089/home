@@ -4,6 +4,9 @@ if [[ ! ${TMUX} && -f ${HOME}/.zshrc.work ]]; then
   source ${HOME}/.zshrc.work
 fi
 
+if [[ -d /opt/homebrew/bin ]]; then
+  export PATH=/opt/homebrew/bin:${PATH}
+fi
 if [[ -d ${HOME}/go/bin ]]; then
   if [[ -f ${HOME}/go/bin/go ]]; then
     # Go installed manually
