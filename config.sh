@@ -36,7 +36,15 @@ if [[ $(uname) == "Linux" ]]; then
 fi
 
 # zed settings
+mkdir -p ${HOME}/.config/zed
 if [[ -f ${HOME}/.config/zed/settings.json ]]; then
   rm -f ${HOME}/.config/zed/settings.json
-  ln -s $(pwd)/zed/settings.json ${HOME}/.config/zed/settings.json
 fi
+ln -s $(pwd)/zed/settings.json ${HOME}/.config/zed/settings.json
+
+# ghostty settings
+mkdir -p ${HOME}/.config/ghostty
+if [[ -f ${HOME}/.config/ghostty/config ]]; then
+  rm -f ${HOME}/.config/ghostty/config
+fi
+ln -s $(pwd)/ghostty/config ${HOME}/.config/ghostty/config
