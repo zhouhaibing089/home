@@ -42,7 +42,11 @@ if [[ $(uname -s) == Linux ]]; then
     export SOLARIZED_THEME=dark
   fi
 else
-  export SOLARIZED_THEME=dark
+  if [[ $(defaults read -g AppleInterfaceStyle 2>/dev/null) == "Dark" ]]; then
+    export SOLARIZED_THEME=dark
+  else
+    export SOLARIZED_THEME=light
+  fi
 fi
 export EDITOR=vim
 
