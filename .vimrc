@@ -11,10 +11,17 @@ set laststatus=2
 set statusline=%F
 " Use 256 colours
 set t_Co=256
-" set background to be dark
-if empty($ZED_TERM)
+if system('defaults read -g AppleInterfaceStyle 2>/dev/null') == "Dark"
   set bg=dark
+else
+  set bg=light
 endif
+
+" set background to be light in ZED
+if !empty($ZED_TERM)
+  set bg=light
+endif
+
 " set maxmempattern higher
 set mmp=2000
 " use solarized color scheme
