@@ -7,14 +7,27 @@
 // custom settings, run `zed: open default settings` from the
 // command palette
 {
-  "ui_font_family": "Hack",
-  "ui_font_size": 20,
-  "buffer_font_size": 20,
+  "icon_theme": "Material Icon Theme",
+  "agent": {
+    "inline_assistant_model": {
+      "provider": "zed.dev",
+      "model": "claude-sonnet-4"
+    },
+    "model_parameters": [],
+    "default_model": {
+      "provider": "zed.dev",
+      "model": "claude-sonnet-4"
+    }
+  },
+  "ui_font_family": "Google Sans",
+  "ui_font_size": 24,
+  "buffer_font_size": 22,
+  "agent_font_size": 24,
   "buffer_font_family": "Hack",
   "theme": {
     "mode": "system",
-    "light": "Solarized Light",
-    "dark": "Solarized Dark"
+    "light": "One Light",
+    "dark": "One Dark"
   },
   "telemetry": {
     "diagnostics": false,
