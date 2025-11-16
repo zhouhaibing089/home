@@ -29,11 +29,6 @@ if empty($ZED_TERM)
   colorscheme solarized
 endif
 
-" hide Menu
-set go-=m
-" hide Toolbar
-set go-=T
-
 " split below current window
 set splitbelow
 

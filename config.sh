@@ -6,6 +6,7 @@ set -o pipefail
 
 # vim.rc file
 rm -f ${HOME}/.vimrc && ln -s $(pwd)/.vimrc ${HOME}/.vimrc
+rm -f ${HOME}/.gvimrc && ln -s $(pwd)/.gvimrc ${HOME}/.gvimrc
 # vim color theme
 mkdir -p ${HOME}/.vim/colors
 rm -f ${HOME}/.vim/colors/solarized.vim
