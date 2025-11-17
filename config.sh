@@ -11,6 +11,12 @@ rm -f ${HOME}/.gvimrc && ln -s $(pwd)/.gvimrc ${HOME}/.gvimrc
 mkdir -p ${HOME}/.vim/colors
 rm -f ${HOME}/.vim/colors/solarized.vim
 ln -s $(pwd)/.vim/colors/solarized.vim ${HOME}/.vim/colors/solarized.vim
+# neovim
+mkdir -p ${HOME}/.config/nvim
+rm -f ${HOME}/.config/nvim/init.lua
+ln -s $(pwd)/nvim/init.lua ${HOME}/.config/nvim/init.lua
+rm -drf ${HOME}/.config/nvim/lua
+ln -s $(pwd)/nvim/lua ${HOME}/.config/nvim/lua
 
 # tmux
 rm -f ${HOME}/.tmux.conf && ln -s $(pwd)/.tmux.conf ${HOME}/.tmux.conf
