@@ -1,7 +1,6 @@
 vim.cmd("syntax on")
 vim.opt.termguicolors = false
 vim.opt.number = true
-vim.opt.relativenumber = true
 vim.opt.colorcolumn = "80"
 vim.opt.textwidth = 80
 vim.opt.splitright = true
@@ -23,14 +22,20 @@ require("telescope").setup {
       },
       grouped = true,
       hidden = true,
+      hide_parent_dir = true,
     },
   },
 }
 require("telescope").load_extension "file_browser"
 
--- keybindings
 vim.keymap.set("n", "<leader>fb", ":Telescope file_browser<CR>")
-vim.keymap.set('n', '<leader>ff', ":Telescope find_files<CR>")
-vim.keymap.set('n', '<leader>fg', ":Telescope live_grep<CR>")
-vim.keymap.set('n', '<leader>fb', ":Telescope buffers<CR>")
-vim.keymap.set('n', '<leader>fh', ":Telescope help_tags<CR>")
+vim.keymap.set('n', "<leader>ff", ":Telescope find_files<CR>")
+vim.keymap.set('n', "<leader>fg", ":Telescope live_grep<CR>")
+
+-- toggleterm
+require("toggleterm").setup {
+  direction = "float",
+}
+
+vim.keymap.set("n", "<leader>t", ":ToggleTerm<CR>")
+vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { noremap = true })
