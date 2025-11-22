@@ -50,7 +50,7 @@ else
 fi
 export EDITOR=vim
 
-if [[ ${ZED_TERM} != "true" && ${VSCODE_INJECTION} != "1" ]]; then
+if [[ ${ZED_TERM} != "true" && ${VSCODE_INJECTION} != "1" && -z ${NVIM:-""} ]]; then
   ZSH_THEME="blinks"
 fi
 
@@ -114,3 +114,5 @@ else
 fi
 
 unsetopt share_history
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

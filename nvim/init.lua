@@ -8,15 +8,29 @@ vim.opt.splitbelow = true
 
 require("config.lazy")
 
--- telescope
-vim.keymap.set("n", "<leader>fb", ":Telescope file_browser<CR>")
-vim.keymap.set("n", "<leader>ff", ":Telescope find_files<CR>")
-vim.keymap.set("n", "<leader>fg", ":Telescope live_grep<CR>")
-vim.keymap.set("n", "<leader>fb", ":Telescope buffers<CR>")
+-- neo-tree
+require("neo-tree").setup({
+	filesystem = {
+		filtered_items = {
+			hide_dotfiles = false,
+			hide_gitignored = false,
+		},
+	},
+})
+
+-- fzf
+vim.g.fzf_files_options = table.concat({
+	'--preview "bat --color=always {}"',
+	"--preview-window right:40%",
+}, " ")
+vim.keymap.set("n", "<leader>ff", ":Files<CR>")
+vim.keymap.set("n", "<leader>fb", ":Buffers<CR>")
+vim.keymap.set("n", "<leader>fg", ":Rg<CR>")
+vim.keymap.set("n", "<leader>ft", ":Tags<CR>")
 
 -- toggleterm
 require("toggleterm").setup({
-	direction = "horizontal",
+	direction = "float",
 })
 
 vim.keymap.set("n", "<leader>t", ":ToggleTerm<CR>")
