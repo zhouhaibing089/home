@@ -1,4 +1,4 @@
-vim.opt.guifont = "JetBrainsMono Nerd Font:h16"
+vim.opt.guifont = "JetBrainsMono Nerd Font:h14"
 vim.cmd("syntax on")
 vim.opt.number = true
 vim.opt.colorcolumn = "80"
@@ -49,13 +49,14 @@ require("bufferline").setup({
 	},
 })
 
--- conform
-require("conform").setup({
-	formatters_by_ft = {
-		lua = { "stylua" },
-	},
-})
-
+-- lspconfig
+vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 vim.keymap.set("n", "<leader>f", function()
-	require("conform").format({ async = true })
-end, { desc = "Format file" })
+	vim.lsp.buf.format({ async = true })
+end, opts)
