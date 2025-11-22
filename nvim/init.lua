@@ -5,11 +5,13 @@ vim.opt.colorcolumn = "80"
 vim.opt.textwidth = 80
 vim.opt.splitright = true
 vim.opt.splitbelow = true
+vim.opt.mmp = 2000
 
 require("config.lazy")
 
 -- neo-tree
 require("neo-tree").setup({
+	sources = { "filesystem", "buffers", "git_status", "document_symbols" },
 	filesystem = {
 		filtered_items = {
 			hide_dotfiles = false,
@@ -17,6 +19,7 @@ require("neo-tree").setup({
 		},
 	},
 })
+vim.keymap.set("n", "<leader>nt", ":Neotree toggle<CR>")
 
 -- fzf
 vim.g.fzf_files_options = table.concat({
@@ -60,3 +63,6 @@ vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 vim.keymap.set("n", "<leader>f", function()
 	vim.lsp.buf.format({ async = true })
 end, opts)
+
+-- lualine
+require("lualine").setup()
