@@ -1,5 +1,5 @@
-vim.opt.guifont = "JetBrainsMono Nerd Font:h14"
 vim.cmd("syntax on")
+vim.opt.guifont = "JetBrainsMono Nerd Font:h14"
 vim.opt.number = true
 vim.opt.colorcolumn = "80"
 vim.opt.textwidth = 80
@@ -42,6 +42,9 @@ vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { noremap = true })
 -- bufferline
 require("bufferline").setup({
 	options = {
+		indicator = {
+			style = "none",
+		},
 		offsets = {
 			{
 				filetype = "neo-tree",
