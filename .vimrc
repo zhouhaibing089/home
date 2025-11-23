@@ -11,6 +11,7 @@ set laststatus=2
 set statusline=%F
 " Use 256 colours
 set t_Co=256
+set termguicolors
 if system('defaults read -g AppleInterfaceStyle 2>/dev/null') == "Dark"
   set bg=dark
 else
