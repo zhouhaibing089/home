@@ -53,3 +53,11 @@ for _, server in ipairs(require("mason-lspconfig").get_installed_servers()) do
 		capabilities = capabilities,
 	})
 end
+
+-- nvim-treesitter
+require("nvim-treesitter.configs").setup({
+	highlight = {
+		enable = true,
+		additional_vim_regex_highlighting = false,
+	},
+})
