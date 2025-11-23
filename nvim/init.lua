@@ -37,7 +37,7 @@ require("toggleterm").setup({
 })
 
 vim.keymap.set("n", "<leader>t", ":ToggleTerm<CR>")
-vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { noremap = true })
+vim.keymap.set("t", "<Esc><Esc>", [[<C-\><C-n>]], { noremap = true })
 
 -- bufferline
 require("bufferline").setup({
