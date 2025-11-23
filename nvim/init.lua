@@ -19,15 +19,6 @@ vim.g.neovide_scroll_animation_length = 0.00
 require("config.lazy")
 
 -- neo-tree
-require("neo-tree").setup({
-	sources = { "filesystem", "buffers", "git_status", "document_symbols" },
-	filesystem = {
-		filtered_items = {
-			hide_dotfiles = false,
-			hide_gitignored = false,
-		},
-	},
-})
 vim.keymap.set("n", "<leader>nt", ":Neotree toggle<CR>")
 
 -- fzf
@@ -41,28 +32,8 @@ vim.keymap.set("n", "<leader>fg", ":Rg<CR>")
 vim.keymap.set("n", "<leader>ft", ":Tags<CR>")
 
 -- toggleterm
-require("toggleterm").setup({
-	direction = "float",
-})
-
 vim.keymap.set("n", "<leader>t", ":ToggleTerm<CR>")
 vim.keymap.set("t", "<Esc><Esc>", [[<C-\><C-n>]], { noremap = true })
-
--- bufferline
-require("bufferline").setup({
-	options = {
-		indicator = {
-			style = "none",
-		},
-		offsets = {
-			{
-				filetype = "neo-tree",
-				text = "",
-				text_align = "center", -- or "left" / "right"
-			},
-		},
-	},
-})
 
 -- lspconfig
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
@@ -75,6 +46,3 @@ vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 vim.keymap.set("n", "<leader>f", function()
 	vim.lsp.buf.format({ async = true })
 end, opts)
-
--- lualine
-require("lualine").setup()
