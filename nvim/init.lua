@@ -76,3 +76,4 @@ vim.api.nvim_set_hl(0, "AerialLine", {
 	fg = "#ffffff",
 	bold = true,
 })
+vim.keymap.set("n", "<leader>ds", ":AerialToggle!<CR>")
