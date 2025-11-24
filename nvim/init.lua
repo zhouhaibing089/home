@@ -67,13 +67,8 @@ require("nvim-treesitter.configs").setup({
 	},
 })
 
--- catppuccin
-vim.cmd.colorscheme("catppuccin")
+-- solarized
+vim.cmd.colorscheme("solarized")
 
 -- aerial
-vim.api.nvim_set_hl(0, "AerialLine", {
-	bg = "#3a3f5a",
-	fg = "#ffffff",
-	bold = true,
-})
 vim.keymap.set("n", "<leader>ds", ":AerialToggle!<CR>")
