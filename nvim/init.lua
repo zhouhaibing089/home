@@ -66,3 +66,13 @@ require("nvim-treesitter.configs").setup({
 		additional_vim_regex_highlighting = false,
 	},
 })
+
+-- catppuccin
+vim.cmd.colorscheme("catppuccin")
+
+-- aerial
+vim.api.nvim_set_hl(0, "AerialLine", {
+	bg = "#3a3f5a",
+	fg = "#ffffff",
+	bold = true,
+})
