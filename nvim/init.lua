@@ -20,6 +20,7 @@ require("config.lazy")
 
 -- neo-tree
 vim.keymap.set("n", "<leader>nt", ":Neotree toggle<CR>")
+vim.keymap.set("n", "<leader>ntr", ":Neotree reveal<CR>")
 
 -- fzf
 vim.g.fzf_files_options = table.concat({
