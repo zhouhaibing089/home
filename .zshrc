@@ -35,19 +35,7 @@ alias tmux='tmux -2'
 
 # Path to your oh-my-zsh installation.
 export ZSH="${HOME}/.oh-my-zsh"
-if [[ $(uname -s) == Linux ]]; then
-  if [[ $(gsettings get org.gnome.desktop.interface color-scheme) == *default* ]]; then
-    export SOLARIZED_THEME=light
-  else
-    export SOLARIZED_THEME=dark
-  fi
-else
-  if [[ $(defaults read -g AppleInterfaceStyle 2>/dev/null) == "Dark" ]]; then
-    export SOLARIZED_THEME=dark
-  else
-    export SOLARIZED_THEME=light
-  fi
-fi
+export SOLARIZED_THEME=dark
 export EDITOR=vim
 
 if [[ ${ZED_TERM} != "true" && ${VSCODE_INJECTION} != "1" && -z ${NVIM:-""} ]]; then
@@ -55,20 +43,13 @@ if [[ ${ZED_TERM} != "true" && ${VSCODE_INJECTION} != "1" && -z ${NVIM:-""} ]]; 
 fi
 
 if [[ $(uname) == "Linux" ]]; then
+  eval $(dircolors ${HOME}/.dircolors.dark)
   plugins=(git golang kube-ps1)
 else
+  eval $(gdircolors ${HOME}/.dircolors.dark)
   plugins=(git golang macos kube-ps1)
 fi
 
-if [[ $(uname) == "Linux" ]]; then
-  if [[ $(gsettings get org.gnome.desktop.interface color-scheme) == *default* ]]; then
-    eval $(dircolors ${HOME}/.dircolors.light)
-  else
-    eval $(dircolors ${HOME}/.dircolors.dark)
-  fi
-else
-  eval $(gdircolors ${HOME}/.dircolors.dark)
-fi
 
 if [[ ${TMUX} ]]; then
   wname=$(tmux display-message -p '#W')
