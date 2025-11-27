@@ -44,10 +44,10 @@ fi
 
 if [[ $(uname) == "Linux" ]]; then
   eval $(dircolors ${HOME}/.dircolors.dark)
-  plugins=(git golang kube-ps1)
+  plugins=(git kube-ps1)
 else
   eval $(gdircolors ${HOME}/.dircolors.dark)
-  plugins=(git golang macos kube-ps1)
+  plugins=(git kube-ps1)
 fi
 
 
