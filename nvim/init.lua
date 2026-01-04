@@ -24,7 +24,7 @@ vim.keymap.set("n", "<leader>nr", ":Neotree reveal<CR>")
 
 -- fzf
 vim.g.fzf_files_options = table.concat({
-	'--preview "bat --color=always {}"',
+	'--preview "bat --theme=\'Solarized (dark)\' --color=always {}"',
 	"--preview-window right:40%",
 }, " ")
 vim.keymap.set("n", "<leader>ff", ":Files<CR>")
