@@ -15,6 +15,11 @@ vim.g.neovide_cursor_animate_in_insert_mode = false
 vim.g.neovide_cursor_animate_command_line = false
 vim.g.neovide_scroll_animation_far_lines = 0
 vim.g.neovide_scroll_animation_length = 0.00
+-- make floating window semi-transparent
+vim.o.winblend = 20
+vim.o.pumblend = 20
+vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
 
 require("config.lazy")
 
@@ -23,8 +28,9 @@ vim.keymap.set("n", "<leader>nt", ":Neotree toggle<CR>")
 vim.keymap.set("n", "<leader>nr", ":Neotree reveal<CR>")
 
 -- fzf
+vim.env.BAT_THEME = "Solarized (dark)"
 vim.g.fzf_files_options = table.concat({
-	'--preview "bat --theme=\'Solarized (dark)\' --color=always {}"',
+	'--preview "bat --color=always {}"',
 	"--preview-window right:40%",
 }, " ")
 vim.keymap.set("n", "<leader>ff", ":Files<CR>")
