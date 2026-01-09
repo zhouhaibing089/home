@@ -29,9 +29,9 @@ vim.keymap.set("n", "<leader>nr", ":Neotree reveal<CR>")
 
 -- fzf
 vim.env.BAT_THEME = "Solarized (dark)"
+vim.g.fzf_preview_window = { "down:50%" }
 vim.g.fzf_files_options = table.concat({
 	'--preview "bat --color=always {}"',
-	"--preview-window right:40%",
 }, " ")
 vim.keymap.set("n", "<leader>ff", ":Files<CR>")
 vim.keymap.set("n", "<leader>fb", ":Buffers<CR>")
