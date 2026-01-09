@@ -39,8 +39,8 @@ vim.keymap.set("n", "<leader>fg", ":Rg<CR>")
 vim.keymap.set("n", "<leader>ft", ":Tags<CR>")
 
 -- toggleterm
-vim.keymap.set("n", "<leader>t", ":ToggleTerm<CR>")
-vim.keymap.set("t", "<Esc><Esc>", [[<C-\><C-n>]], { noremap = true })
+vim.keymap.set("n", "<leader>tf", ":ToggleTerm<CR>")
+vim.keymap.set("n", "<leader>tb", ":ToggleTerm direction=horizontal<CR>")
 
 -- lspconfig
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)

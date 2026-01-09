@@ -5,6 +5,7 @@ return {
 		float_opts = {
 			winblend = 20,
 		},
+		shade_terminals = false,
 	},
 	version = "*",
 	config = true,
