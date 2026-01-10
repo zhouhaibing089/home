@@ -10,11 +10,6 @@ return {
 			local cmp = require("cmp")
 
 			cmp.setup({
-				mapping = cmp.mapping.preset.insert({
-					["<C-Space>"] = cmp.mapping.complete(),
-					["<CR>"] = cmp.mapping.confirm({ select = false }),
-					["<C-e>"] = cmp.mapping.abort(),
-				}),
 				sources = {
 					{ name = "nvim_lsp" },
 					{ name = "buffer" },

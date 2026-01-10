@@ -3,6 +3,9 @@ return {
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v3.x",
 		opts = {
+			window = {
+				position = "float",
+			},
 			sources = { "filesystem", "buffers", "git_status", "document_symbols" },
 			filesystem = {
 				filtered_items = {

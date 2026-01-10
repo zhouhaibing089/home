@@ -24,8 +24,8 @@ vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
 require("config.lazy")
 
 -- neo-tree
-vim.keymap.set("n", "<leader>nt", ":Neotree toggle<CR>")
-vim.keymap.set("n", "<leader>nr", ":Neotree reveal<CR>")
+vim.keymap.set("n", "<leader>nt", ":Neotree source=filesystem toggle<CR>")
+vim.keymap.set("n", "<leader>nr", ":Neotree source=filesystem reveal<CR>")
 
 -- fzf
 vim.env.BAT_THEME = "Solarized (dark)"
