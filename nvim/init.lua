@@ -38,10 +38,22 @@ vim.api.nvim_create_autocmd("User", {
 vim.cmd([[
 command! -bang -nargs=* RgHere
   \ call fzf#vim#grep(
-  \ "rg --column --line-number --no-heading --color=always --smart-case -- "
+  \ "rg --column --line-number --no-heading --color=always --smart-case -. -- "
   \   . fzf#shellescape(<q-args>)
   \   . " "
   \   . expand("%:p:.:h"),
+  \ fzf#vim#with_preview({ "options": [
+  \   "--delimiter", ":",
+  \   "--nth", "4..",
+  \   "--with-nth", "1,2,3,4..",
+  \ ] }),
+  \ <bang>0)
+]])
+vim.cmd([[
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \ "rg --column --line-number --no-heading --color=always --smart-case -. -- "
+  \   . fzf#shellescape(<q-args>),
   \ fzf#vim#with_preview({ "options": [
   \   "--delimiter", ":",
   \   "--nth", "4..",
@@ -55,7 +67,7 @@ vim.g.fzf_files_options = table.concat({
 	'--preview "bat --color=always {}"',
 }, " ")
 -- ff (current buffer's directory), fF (workspace)
-vim.keymap.set("n", "<leader>ff", ":Files %:p:h<CR>")
+vim.keymap.set("n", "<leader>ff", ":Files %:p:.:h<CR>")
 vim.keymap.set("n", "<leader>fF", ":Files<CR>")
 vim.keymap.set("n", "<leader>fb", ":Buffers<CR>")
 -- fg (current buffer's directory), fG (workspace)
@@ -64,7 +76,7 @@ vim.keymap.set("n", "<leader>fG", ":Rg<CR>")
 vim.keymap.set("n", "<leader>ft", ":Tags<CR>")
 
 -- toggleterm
-vim.keymap.set("n", "<leader>tf", ":ToggleTerm<CR>")
+vim.keymap.set("n", "<leader>tf", ":ToggleTerm direction=float<CR>")
 vim.keymap.set("n", "<leader>tb", ":ToggleTerm direction=horizontal<CR>")
 
 -- lspconfig
