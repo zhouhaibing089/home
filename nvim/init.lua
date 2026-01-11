@@ -43,7 +43,7 @@ vim.api.nvim_create_autocmd("User", {
 vim.cmd([[
 command! -bang -nargs=* RgHere
   \ call fzf#vim#grep(
-  \ "rg --column --line-number --no-heading --color=always --smart-case -. -- "
+  \ "rg --column -n -L --no-heading --color=always --smart-case -. -- "
   \   . fzf#shellescape(<q-args>)
   \   . " "
   \   . expand("%:p:.:h"),
@@ -57,7 +57,7 @@ command! -bang -nargs=* RgHere
 vim.cmd([[
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
-  \ "rg --column --line-number --no-heading --color=always --smart-case -. -- "
+  \ "rg --column -n -L --no-heading --color=always --smart-case -. -- "
   \   . fzf#shellescape(<q-args>),
   \ fzf#vim#with_preview({ "options": [
   \   "--delimiter", ":",
@@ -67,6 +67,7 @@ command! -bang -nargs=* Rg
   \ <bang>0)
 ]])
 vim.env.BAT_THEME = "Solarized (dark)"
+vim.env.FZF_DEFAULT_OPTS = "--history=" .. os.getenv("HOME") .. "/.fzf_history"
 vim.g.fzf_preview_window = { "down:50%" }
 vim.g.fzf_files_options = table.concat({
 	'--preview "bat --color=always {}"',
