@@ -34,14 +34,33 @@ vim.api.nvim_create_autocmd("User", {
 })
 
 -- fzf
+-- RgHere limits rg in current buffer's directory
+vim.cmd([[
+command! -bang -nargs=* RgHere
+  \ call fzf#vim#grep(
+  \ "rg --column --line-number --no-heading --color=always --smart-case -- "
+  \   . fzf#shellescape(<q-args>)
+  \   . " "
+  \   . expand("%:p:.:h"),
+  \ fzf#vim#with_preview({ "options": [
+  \   "--delimiter", ":",
+  \   "--nth", "4..",
+  \   "--with-nth", "1,2,3,4..",
+  \ ] }),
+  \ <bang>0)
+]])
 vim.env.BAT_THEME = "Solarized (dark)"
 vim.g.fzf_preview_window = { "down:50%" }
 vim.g.fzf_files_options = table.concat({
 	'--preview "bat --color=always {}"',
 }, " ")
-vim.keymap.set("n", "<leader>ff", ":Files<CR>")
+-- ff (current buffer's directory), fF (workspace)
+vim.keymap.set("n", "<leader>ff", ":Files %:p:h<CR>")
+vim.keymap.set("n", "<leader>fF", ":Files<CR>")
 vim.keymap.set("n", "<leader>fb", ":Buffers<CR>")
-vim.keymap.set("n", "<leader>fg", ":Rg<CR>")
+-- fg (current buffer's directory), fG (workspace)
+vim.keymap.set("n", "<leader>fg", ":RgHere<CR>")
+vim.keymap.set("n", "<leader>fG", ":Rg<CR>")
 vim.keymap.set("n", "<leader>ft", ":Tags<CR>")
 
 -- toggleterm
