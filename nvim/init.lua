@@ -39,7 +39,7 @@ vim.api.nvim_create_autocmd("User", {
 })
 
 -- fzf
--- RgHere limits rg in current buffer's directory
+-- RgHere searches current buffer directory
 vim.cmd([[
 command! -bang -nargs=* RgHere
   \ call fzf#vim#grep(
@@ -54,11 +54,26 @@ command! -bang -nargs=* RgHere
   \ ] }),
   \ <bang>0)
 ]])
+-- RgAll searches current work directory
 vim.cmd([[
-command! -bang -nargs=* Rg
+command! -bang -nargs=* RgAll
   \ call fzf#vim#grep(
   \ "rg --column -n -L --no-heading --color=always --smart-case -. -- "
   \   . fzf#shellescape(<q-args>),
+  \ fzf#vim#with_preview({ "options": [
+  \   "--delimiter", ":",
+  \   "--nth", "4..",
+  \   "--with-nth", "1,2,3,4..",
+  \ ] }),
+  \ <bang>0)
+]])
+-- Rg takes args as glob filter
+vim.cmd([[
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \ "rg --column -n -L --no-heading --color=always --smart-case --glob="
+  \   . fzf#shellescape(<q-args>)
+  \   . " -- ''",
   \ fzf#vim#with_preview({ "options": [
   \   "--delimiter", ":",
   \   "--nth", "4..",
@@ -78,7 +93,7 @@ vim.keymap.set("n", "<leader>fF", ":Files<CR>")
 vim.keymap.set("n", "<leader>fb", ":Buffers<CR>")
 -- fg (current buffer's directory), fG (workspace)
 vim.keymap.set("n", "<leader>fg", ":RgHere<CR>")
-vim.keymap.set("n", "<leader>fG", ":Rg<CR>")
+vim.keymap.set("n", "<leader>fG", ":RgAll<CR>")
 vim.keymap.set("n", "<leader>ft", ":Tags<CR>")
 
 -- toggleterm
