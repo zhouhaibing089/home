@@ -43,7 +43,7 @@ vim.api.nvim_create_autocmd("User", {
 vim.cmd([[
 command! -bang -nargs=* RgHere
   \ call fzf#vim#grep(
-  \ "rg --column -n -L --no-heading --color=always --smart-case -. -- "
+  \ "rg --column -n -L --no-heading --color=always -S -. -g '!.git/*' -- "
   \   . fzf#shellescape(<q-args>)
   \   . " "
   \   . expand("%:p:.:h"),
@@ -58,7 +58,7 @@ command! -bang -nargs=* RgHere
 vim.cmd([[
 command! -bang -nargs=* RgAll
   \ call fzf#vim#grep(
-  \ "rg --column -n -L --no-heading --color=always --smart-case -. -- "
+  \ "rg --column -n -L --no-heading --color=always -S -. -g '!.git/*' -- "
   \   . fzf#shellescape(<q-args>),
   \ fzf#vim#with_preview({ "options": [
   \   "--delimiter", ":",
@@ -71,7 +71,7 @@ command! -bang -nargs=* RgAll
 vim.cmd([[
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
-  \ "rg --column -n -L --no-heading --color=always --smart-case --glob="
+  \ "rg --column -n -L --no-heading --color=always -S -. -g '!.git/*' -g "
   \   . fzf#shellescape(<q-args>)
   \   . " -- ''",
   \ fzf#vim#with_preview({ "options": [
@@ -82,18 +82,19 @@ command! -bang -nargs=* Rg
   \ <bang>0)
 ]])
 vim.env.BAT_THEME = "Solarized (dark)"
+vim.env.FZF_DEFAULT_COMMAND = "fd --type f --hidden --follow --exclude .git"
 vim.env.FZF_DEFAULT_OPTS = "--history=" .. os.getenv("HOME") .. "/.fzf_history"
 vim.g.fzf_preview_window = { "down:50%" }
 vim.g.fzf_files_options = table.concat({
 	'--preview "bat --color=always {}"',
 }, " ")
--- ff (current buffer's directory), fF (workspace)
-vim.keymap.set("n", "<leader>ff", ":Files %:p:.:h<CR>")
-vim.keymap.set("n", "<leader>fF", ":Files<CR>")
+-- fF (current buffer's directory), ff (workspace)
+vim.keymap.set("n", "<leader>fF", ":Files %:p:.:h<CR>")
+vim.keymap.set("n", "<leader>ff", ":Files<CR>")
 vim.keymap.set("n", "<leader>fb", ":Buffers<CR>")
--- fg (current buffer's directory), fG (workspace)
-vim.keymap.set("n", "<leader>fg", ":RgHere<CR>")
-vim.keymap.set("n", "<leader>fG", ":RgAll<CR>")
+-- fG (current buffer's directory), fg (workspace)
+vim.keymap.set("n", "<leader>fG", ":RgHere<CR>")
+vim.keymap.set("n", "<leader>fg", ":RgAll<CR>")
 vim.keymap.set("n", "<leader>ft", ":Tags<CR>")
 
 -- toggleterm
