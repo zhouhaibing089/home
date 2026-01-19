@@ -39,6 +39,30 @@ vim.api.nvim_create_autocmd("User", {
 })
 
 -- fzf
+local function find_files(opts, dir)
+	local query = ""
+	if opts.range == 2 and opts.line1 == opts.line2 then
+		-- visual mode with selection that in the same line
+		local start_pos = vim.fn.getpos("'<")
+		local end_pos = vim.fn.getpos("'>")
+		local region = vim.fn.getregion(start_pos, end_pos, {
+			type = vim.fn.visualmode(),
+		})
+		query = "'" .. region[1]
+	elseif #opts.fargs > 0 then
+		query = opts.args
+	end
+	local preview = vim.fn["fzf#vim#with_preview"]({
+		options = { "--query", query },
+	})
+	vim.fn["fzf#vim#files"](dir, preview)
+end
+vim.api.nvim_create_user_command("Ff", function(opts)
+	find_files(opts, vim.fn.expand("."))
+end, { desc = "find files", nargs = "*", range = true })
+vim.api.nvim_create_user_command("FF", function(opts)
+	find_files(opts, vim.fn.expand("%:p:.:h"))
+end, { desc = "find files", nargs = "*", range = true })
 -- RgHere searches current buffer directory
 vim.cmd([[
 command! -bang -nargs=* RgHere
@@ -89,8 +113,8 @@ vim.g.fzf_files_options = table.concat({
 	'--preview "bat --color=always {}"',
 }, " ")
 -- fF (current buffer's directory), ff (workspace)
-vim.keymap.set("n", "<leader>fF", ":Files %:p:.:h<CR>")
-vim.keymap.set("n", "<leader>ff", ":Files<CR>")
+vim.keymap.set({ "n", "x" }, "<leader>ff", ":Ff<CR>")
+vim.keymap.set({ "n", "x" }, "<leader>fF", ":FF<CR>")
 vim.keymap.set("n", "<leader>fb", ":Buffers<CR>")
 -- fG (current buffer's directory), fg (workspace)
 vim.keymap.set("n", "<leader>fG", ":RgHere<CR>")
