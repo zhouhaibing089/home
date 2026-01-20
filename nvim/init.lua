@@ -1,3 +1,9 @@
+for name in pairs(package.loaded) do
+	if name:match("^config%.") then
+		package.loaded[name] = nil
+	end
+end
+
 require("config.options")
 require("config.neovide")
 require("config.keymaps")

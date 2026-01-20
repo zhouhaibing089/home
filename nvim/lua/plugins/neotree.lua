@@ -4,7 +4,9 @@ return {
 		branch = "v3.x",
 		opts = {
 			window = {
-				position = "float",
+				position = "left",
+				width = 60,
+				auto_expand_width = true,
 			},
 			sources = { "filesystem", "buffers", "git_status", "document_symbols" },
 			filesystem = {
