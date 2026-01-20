@@ -46,7 +46,7 @@ local function grep_files(opts, dir)
 			if v == "--" then
 				break
 			end
-			g = " -g " .. vim.fn.shellescape(v)
+			g = g .. " -g " .. vim.fn.shellescape(v)
 		end
 		-- anything after `--` is text to grep
 		rargs = opts.args:sub(j + 1):gsub("^%s+", "")
@@ -76,6 +76,7 @@ local function grep_files(opts, dir)
 		.. vim.fn["fzf#shellescape"](query)
 		.. " "
 		.. dir
+	-- vim.notify(rg, vim.log.levels.DEBUG)
 	vim.fn["fzf#vim#grep"](rg, preview)
 end
 
