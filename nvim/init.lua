@@ -6,8 +6,8 @@ end
 
 require("config.options")
 require("config.neovide")
-require("config.keymaps")
 require("config.lazy")
+require("config.keymaps")
 require("config.neotree")
 require("config.fzf")
 require("config.toggleterm")
