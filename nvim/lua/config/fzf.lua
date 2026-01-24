@@ -8,14 +8,12 @@ local function get_visual_selection()
 	return region[1]
 end
 
-local function find_files(opts, dir)
-	local query = nil
+local function find_files(opts, dir, query)
+	query = query or ""
 	if opts.range == 2 and opts.line1 == opts.line2 then
 		query = "'" .. get_visual_selection()
 	elseif #opts.fargs > 0 then
 		query = opts.args
-	else
-		query = ""
 	end
 	local preview = vim.fn["fzf#vim#with_preview"]({
 		options = { "--query", query },
@@ -49,13 +47,15 @@ local function grep_files(opts, dir)
 			g = g .. " -g " .. vim.fn.shellescape(v)
 		end
 		-- anything after `--` is text to grep
-		rargs = opts.args:sub(j + 1):gsub("^%s+", "")
+		local rargs = opts.args:sub(j + 1):gsub("^%s+", "")
 		if rargs ~= "" then
 			query = rargs
 		end
 	elseif #opts.fargs > 0 then
 		query = opts.args
 	end
+
+	-- delegate to fzf#vim#grep
 	local preview = vim.fn["fzf#vim#with_preview"]({
 		options = {
 			"--query",
@@ -68,7 +68,7 @@ local function grep_files(opts, dir)
 			"1,2,3,4..",
 		},
 	})
-	rg = "rg --column -n -L --no-heading --color=always -S -. "
+	local rg = "rg --column -n -L --no-heading --color=always -S -. "
 		.. "-g '!.git/*' "
 		.. g
 		.. copts
@@ -76,7 +76,11 @@ local function grep_files(opts, dir)
 		.. vim.fn["fzf#shellescape"](query)
 		.. " "
 		.. dir
-	-- vim.notify(rg, vim.log.levels.DEBUG)
+	-- save the last grep state so it can be picked up later
+	vim.g.t = vim.tbl_extend("force", vim.g.t or {}, {
+		rg = rg,
+		preview = preview,
+	})
 	vim.fn["fzf#vim#grep"](rg, preview)
 end
 
@@ -101,4 +105,26 @@ vim.keymap.set("n", "<leader>fb", ":Buffers<CR>")
 -- fG (current buffer's directory), fg (workspace)
 vim.keymap.set({ "n", "x" }, "<leader>fg", ":Fg<CR>")
 vim.keymap.set({ "n", "x" }, "<leader>fG", ":FG<CR>")
+vim.keymap.set("n", "<leader>f.", function()
+	vim.g.t = vim.g.t or {}
+	local rg = vim.g.t.rg
+		or "rg --column -n -L --no-heading --color=always -S -. "
+			.. "-g '!.git/*' "
+			.. " -- "
+			.. " "
+			.. vim.fn.expand(".")
+	local preview = vim.g.t.preview
+		or vim.fn["fzf#vim#with_preview"]({
+			options = {
+				"--delimiter",
+				":",
+				"--nth",
+				"4..",
+				"--with-nth",
+				"1,2,3,4..",
+			},
+		})
+	vim.notify(rg, vim.log.levels.DEBUG)
+	vim.fn["fzf#vim#grep"](rg, preview)
+end)
 vim.keymap.set("n", "<leader>ft", ":Tags<CR>")
