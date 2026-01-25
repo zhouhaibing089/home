@@ -50,6 +50,7 @@ local function find_files(opts, dir, query)
 				title = " Files (" .. dir .. ") ",
 				preview = { layout = "down", size = "50%" },
 			},
+			prompt = query == "" and "> " or (query .. " > "),
 		})
 	)
 end
@@ -114,6 +115,7 @@ local function grep_files(opts, dir, query)
 				["--nth"] = "4..",
 				["--with-nth"] = "1,2,3,4..",
 			}),
+			prompt = query == "" and "> " or (query .. " > "),
 		})
 	)
 end
@@ -155,6 +157,7 @@ vim.keymap.set("n", "<leader>f.", function()
 				["--nth"] = "4..",
 				["--with-nth"] = "1,2,3,4..",
 			}),
+			prompt = query == "" and "> " or (query .. " > "),
 		})
 	)
 end)
