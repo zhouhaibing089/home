@@ -1,3 +1,29 @@
+local fzf = require("fzf-lua")
+local actions = require("fzf-lua.actions")
+
+local fzf_opts = {
+	["--ansi"] = true,
+	["--info"] = "inline-right",
+	["--height"] = "100%",
+	["--layout"] = "reverse",
+	["--border"] = "none",
+	["--highlight-line"] = true,
+	["--history"] = os.getenv("HOME") .. "/.fzf_history",
+}
+local fzf_actions = {
+	["default"] = actions.file_edit,
+	["ctrl-s"] = actions.file_split,
+	["ctrl-v"] = actions.file_vsplit,
+}
+local exec_opts = {
+	cwd = vim.uv.cwd(),
+	previewer = "bat",
+	actions = fzf_actions,
+	fzf_opts = fzf_opts,
+}
+
+vim.env.BAT_THEME = "Solarized (dark)"
+
 local function get_visual_selection()
 	-- visual mode with selection that in the same line
 	local start_pos = vim.fn.getpos("'<")
@@ -9,27 +35,34 @@ local function get_visual_selection()
 end
 
 local function find_files(opts, dir, query)
-	query = query or ""
+	local query = query or ""
 	if opts.range == 2 and opts.line1 == opts.line2 then
-		query = "'" .. get_visual_selection()
+		query = get_visual_selection()
 	elseif #opts.fargs > 0 then
 		query = opts.args
 	end
-	local preview = vim.fn["fzf#vim#with_preview"]({
-		options = { "--query", query },
-	})
-	vim.fn["fzf#vim#files"](dir, preview)
+	fd = "fd -t f -H -L -E .git " .. vim.fn.shellescape(query) .. " " .. dir
+	vim.notify(fd, vim.log.levels.DEBUG)
+	fzf.fzf_exec(
+		fd,
+		vim.tbl_extend("force", exec_opts, {
+			winopts = {
+				title = " Files (" .. dir .. ") ",
+				preview = { layout = "down", size = "50%" },
+			},
+		})
+	)
 end
 
 vim.api.nvim_create_user_command("Ff", function(opts)
-	find_files(opts, vim.fn.expand("."))
+	find_files(opts, "")
 end, { desc = "find files", nargs = "*", range = true })
 vim.api.nvim_create_user_command("FF", function(opts)
 	find_files(opts, vim.fn.expand("%:p:.:h"))
 end, { desc = "find files", nargs = "*", range = true })
 
-local function grep_files(opts, dir)
-	local query = ""
+local function grep_files(opts, dir, query)
+	local query = query or ""
 	local copts = "" -- additional command options
 	if opts.range == 2 and opts.line1 == opts.line2 then
 		-- query from visual selection
@@ -54,50 +87,44 @@ local function grep_files(opts, dir)
 	elseif #opts.fargs > 0 then
 		query = opts.args
 	end
-
-	-- delegate to fzf#vim#grep
-	local preview = vim.fn["fzf#vim#with_preview"]({
-		options = {
-			"--query",
-			query,
-			"--delimiter",
-			":",
-			"--nth",
-			"4..",
-			"--with-nth",
-			"1,2,3,4..",
-		},
-	})
 	local rg = "rg --column -n -L --no-heading --color=always -S -. "
 		.. "-g '!.git/*' "
 		.. g
 		.. copts
 		.. " -- "
-		.. vim.fn["fzf#shellescape"](query)
+		.. vim.fn.shellescape(query)
 		.. " "
 		.. dir
 	-- save the last grep state so it can be picked up later
 	vim.g.t = vim.tbl_extend("force", vim.g.t or {}, {
 		rg = rg,
-		preview = preview,
+		query = query,
+		dir = dir,
 	})
-	vim.fn["fzf#vim#grep"](rg, preview)
+	vim.notify(rg, vim.log.levels.DEBUG)
+	fzf.fzf_exec(
+		rg,
+		vim.tbl_extend("force", exec_opts, {
+			winopts = {
+				title = " Grep (" .. dir .. ") ",
+				preview = { layout = "down", size = "50%" },
+			},
+			fzf_opts = vim.tbl_extend("force", fzf_opts, {
+				["--delimiter"] = ":",
+				["--nth"] = "4..",
+				["--with-nth"] = "1,2,3,4..",
+			}),
+		})
+	)
 end
 
 vim.api.nvim_create_user_command("Fg", function(opts)
-	grep_files(opts, vim.fn.expand("."))
+	grep_files(opts, "")
 end, { desc = "find files", nargs = "*", range = true })
 vim.api.nvim_create_user_command("FG", function(opts)
 	grep_files(opts, vim.fn.expand("%:p:.:h"))
 end, { desc = "find files", nargs = "*", range = true })
 
-vim.env.BAT_THEME = "Solarized (dark)"
-vim.env.FZF_DEFAULT_COMMAND = "fd --type f --hidden --follow --exclude .git"
-vim.env.FZF_DEFAULT_OPTS = "--history=" .. os.getenv("HOME") .. "/.fzf_history"
-vim.g.fzf_preview_window = { "down:50%" }
-vim.g.fzf_files_options = table.concat({
-	'--preview "bat --color=always {}"',
-}, " ")
 -- fF (current buffer's directory), ff (workspace)
 vim.keymap.set({ "n", "x" }, "<leader>ff", ":Ff<CR>")
 vim.keymap.set({ "n", "x" }, "<leader>fF", ":FF<CR>")
@@ -112,19 +139,23 @@ vim.keymap.set("n", "<leader>f.", function()
 			.. "-g '!.git/*' "
 			.. " -- "
 			.. " "
-			.. vim.fn.expand(".")
-	local preview = vim.g.t.preview
-		or vim.fn["fzf#vim#with_preview"]({
-			options = {
-				"--delimiter",
-				":",
-				"--nth",
-				"4..",
-				"--with-nth",
-				"1,2,3,4..",
+			.. vim.fn.shellescape("")
+			.. vim.uv.cwd()
+	local dir = vim.g.t.dir or vim.uv.cwd()
+	local query = vim.g.t.query or ""
+	fzf.fzf_exec(
+		rg,
+		vim.tbl_extend("force", exec_opts, {
+			winopts = {
+				title = " Grep (" .. dir .. ") ",
+				preview = { layout = "down", size = "50%" },
 			},
+			fzf_opts = vim.tbl_extend("force", fzf_opts, {
+				["--delimiter"] = ":",
+				["--nth"] = "4..",
+				["--with-nth"] = "1,2,3,4..",
+			}),
 		})
-	vim.notify(rg, vim.log.levels.DEBUG)
-	vim.fn["fzf#vim#grep"](rg, preview)
+	)
 end)
 vim.keymap.set("n", "<leader>ft", ":Tags<CR>")

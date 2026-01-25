@@ -20,3 +20,6 @@ vim.keymap.set(
 	':let @+ = expand("%:p:.:h")<CR>',
 	{ desc = "copy relative directory of current buffer" }
 )
+
+-- reload configuration
+vim.keymap.set("n", "<leader>r", ":source $MYVIMRC<CR>", { desc = "reload configuration" })
