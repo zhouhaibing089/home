@@ -105,6 +105,7 @@ local function grep_files(opts, dir, query)
 			title = " Grep in " .. dir .. "/ ",
 			preview = { layout = "down", size = "50%" },
 		},
+		line_field_index = "{2}",
 		fzf_opts = vim.tbl_extend("force", fzf_opts, {
 			["--delimiter"] = ":",
 			["--nth"] = "4..",
