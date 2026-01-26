@@ -44,7 +44,7 @@ local function find_files(opts, dir, query)
 	cmd = "fd -t f -H -L -E .git " .. vim.fn.shellescape(query) .. " " .. dir
 	f_opts = vim.tbl_extend("force", exec_opts, {
 		winopts = {
-			title = " Files (" .. dir .. ") ",
+			title = " Files in " .. dir .. "/ ",
 			preview = { layout = "down", size = "50%" },
 		},
 		prompt = query == "" and "> " or (query .. " > "),
@@ -102,7 +102,7 @@ local function grep_files(opts, dir, query)
 		.. dir
 	local f_opts = vim.tbl_extend("force", exec_opts, {
 		winopts = {
-			title = " Grep (" .. dir .. ") ",
+			title = " Grep in " .. dir .. "/ ",
 			preview = { layout = "down", size = "50%" },
 		},
 		fzf_opts = vim.tbl_extend("force", fzf_opts, {
