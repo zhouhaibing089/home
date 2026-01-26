@@ -41,18 +41,21 @@ local function find_files(opts, dir, query)
 	elseif #opts.fargs > 0 then
 		query = opts.args
 	end
-	fd = "fd -t f -H -L -E .git " .. vim.fn.shellescape(query) .. " " .. dir
-	vim.notify(fd, vim.log.levels.DEBUG)
-	fzf.fzf_exec(
-		fd,
-		vim.tbl_extend("force", exec_opts, {
-			winopts = {
-				title = " Files (" .. dir .. ") ",
-				preview = { layout = "down", size = "50%" },
-			},
-			prompt = query == "" and "> " or (query .. " > "),
-		})
-	)
+	cmd = "fd -t f -H -L -E .git " .. vim.fn.shellescape(query) .. " " .. dir
+	f_opts = vim.tbl_extend("force", exec_opts, {
+		winopts = {
+			title = " Files (" .. dir .. ") ",
+			preview = { layout = "down", size = "50%" },
+		},
+		prompt = query == "" and "> " or (query .. " > "),
+	})
+	-- save the last grep state so it can be picked up later
+	vim.g.t = vim.tbl_extend("force", vim.g.t or {}, {
+		cmd = cmd,
+		exec_opts = f_opts,
+	})
+	vim.notify(cmd, vim.log.levels.DEBUG)
+	fzf.fzf_exec(cmd, f_opts)
 end
 
 vim.api.nvim_create_user_command("Ff", function(opts)
@@ -88,7 +91,7 @@ local function grep_files(opts, dir, query)
 	elseif #opts.fargs > 0 then
 		query = opts.args
 	end
-	local rg = "rg --column -n -L --no-heading --color=always -S -. "
+	local cmd = "rg --column -n -L --no-heading --color=always -S -. "
 		.. "-g '!.git/*' "
 		.. g
 		.. copts
@@ -96,28 +99,25 @@ local function grep_files(opts, dir, query)
 		.. vim.fn.shellescape(query)
 		.. " "
 		.. dir
+	local f_opts = vim.tbl_extend("force", exec_opts, {
+		winopts = {
+			title = " Grep (" .. dir .. ") ",
+			preview = { layout = "down", size = "50%" },
+		},
+		fzf_opts = vim.tbl_extend("force", fzf_opts, {
+			["--delimiter"] = ":",
+			["--nth"] = "4..",
+			["--with-nth"] = "1,2,3,4..",
+		}),
+		prompt = query == "" and "> " or (query .. " > "),
+	})
 	-- save the last grep state so it can be picked up later
 	vim.g.t = vim.tbl_extend("force", vim.g.t or {}, {
-		rg = rg,
-		query = query,
-		dir = dir,
+		cmd = cmd,
+		exec_opts = f_opts,
 	})
-	vim.notify(rg, vim.log.levels.DEBUG)
-	fzf.fzf_exec(
-		rg,
-		vim.tbl_extend("force", exec_opts, {
-			winopts = {
-				title = " Grep (" .. dir .. ") ",
-				preview = { layout = "down", size = "50%" },
-			},
-			fzf_opts = vim.tbl_extend("force", fzf_opts, {
-				["--delimiter"] = ":",
-				["--nth"] = "4..",
-				["--with-nth"] = "1,2,3,4..",
-			}),
-			prompt = query == "" and "> " or (query .. " > "),
-		})
-	)
+	vim.notify(cmd, vim.log.levels.DEBUG)
+	fzf.fzf_exec(cmd, f_opts)
 end
 
 vim.api.nvim_create_user_command("Fg", function(opts)
@@ -136,29 +136,10 @@ vim.keymap.set({ "n", "x" }, "<leader>fg", ":Fg<CR>")
 vim.keymap.set({ "n", "x" }, "<leader>fG", ":FG<CR>")
 vim.keymap.set("n", "<leader>f.", function()
 	vim.g.t = vim.g.t or {}
-	local rg = vim.g.t.rg
-		or "rg --column -n -L --no-heading --color=always -S -. "
-			.. "-g '!.git/*' "
-			.. " -- "
-			.. " "
-			.. vim.fn.shellescape("")
-			.. vim.uv.cwd()
-	local dir = vim.g.t.dir or vim.uv.cwd()
-	local query = vim.g.t.query or ""
-	fzf.fzf_exec(
-		rg,
-		vim.tbl_extend("force", exec_opts, {
-			winopts = {
-				title = " Grep (" .. dir .. ") ",
-				preview = { layout = "down", size = "50%" },
-			},
-			fzf_opts = vim.tbl_extend("force", fzf_opts, {
-				["--delimiter"] = ":",
-				["--nth"] = "4..",
-				["--with-nth"] = "1,2,3,4..",
-			}),
-			prompt = query == "" and "> " or (query .. " > "),
-		})
-	)
+	local cmd = vim.g.t.cmd or nil
+	local f_opts = vim.g.t.exec_opts or nil
+	if cmd and f_opts then
+		fzf.fzf_exec(cmd, f_opts)
+	end
 end)
 vim.keymap.set("n", "<leader>ft", ":FzfLua tags<CR>")
