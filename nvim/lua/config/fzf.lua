@@ -59,11 +59,11 @@ local function find_files(opts, dir, query)
 end
 
 vim.api.nvim_create_user_command("Ff", function(opts)
-	find_files(opts, "")
+	local t = vim.g.t or {}
+	find_files(opts, t.cwd or "")
 end, { desc = "find files", nargs = "*", range = true })
 vim.api.nvim_create_user_command("FF", function(opts)
-	local t = vim.g.t or {}
-	find_files(opts, t.cwd or vim.fn.expand("%:p:.:h"))
+	find_files(opts, vim.fn.expand("%:p:.:h"))
 end, { desc = "find files", nargs = "*", range = true })
 
 local function grep_files(opts, dir, query)
@@ -122,11 +122,11 @@ local function grep_files(opts, dir, query)
 end
 
 vim.api.nvim_create_user_command("Fg", function(opts)
-	grep_files(opts, "")
+	local t = vim.g.t or {}
+	grep_files(opts, t.cwd or "")
 end, { desc = "find files", nargs = "*", range = true })
 vim.api.nvim_create_user_command("FG", function(opts)
-	local t = vim.g.t or {}
-	grep_files(opts, t.cwd or vim.fn.expand("%:p:.:h"))
+	grep_files(opts, vim.fn.expand("%:p:.:h"))
 end, { desc = "find files", nargs = "*", range = true })
 
 -- fF (current buffer's directory), ff (workspace)
@@ -148,7 +148,7 @@ vim.keymap.set("n", "<leader>ft", ":FzfLua tags<CR>")
 -- pin to current buffer's directory
 vim.keymap.set("n", "<leader>fp", function()
 	t = vim.g.t or {}
-	if vim.g.t.cwd then
+	if t.cwd then
 		t.cwd = nil
 	else
 		cwd = vim.fn.expand("%:p:.:h")
