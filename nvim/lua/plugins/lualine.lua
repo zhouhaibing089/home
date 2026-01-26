@@ -10,9 +10,15 @@ return {
 					path = 1,
 				},
 			},
-			lualine_x = { "filetype" },
-			lualine_y = { "progress" },
-			lualine_z = {},
+
+			lualine_x = {
+				function()
+					vim.g.t = vim.g.t or {}
+					return vim.g.t.cwd or ""
+				end,
+			},
+			lualine_y = { "filetype" },
+			lualine_z = { "progress" },
 		},
 		inactive_sections = {
 			lualine_c = {
