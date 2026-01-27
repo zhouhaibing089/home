@@ -17,12 +17,9 @@ local fzf_actions = {
 }
 local exec_opts = {
 	cwd = vim.uv.cwd(),
-	previewer = "bat",
 	actions = fzf_actions,
 	fzf_opts = fzf_opts,
 }
-
-vim.env.BAT_THEME = "Solarized (dark)"
 
 local function get_visual_selection()
 	-- visual mode with selection that in the same line
