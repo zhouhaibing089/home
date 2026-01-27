@@ -45,7 +45,6 @@ local function find_files(opts, dir, query)
 	f_opts = vim.tbl_extend("force", exec_opts, {
 		winopts = {
 			title = " Files in " .. dir .. "/ ",
-			preview = { layout = "down", size = "50%" },
 		},
 		prompt = query == "" and "> " or (query .. " > "),
 	})
@@ -103,7 +102,6 @@ local function grep_files(opts, dir, query)
 	local f_opts = vim.tbl_extend("force", exec_opts, {
 		winopts = {
 			title = " Grep in " .. dir .. "/ ",
-			preview = { layout = "down", size = "50%" },
 		},
 		line_field_index = "{2}",
 		fzf_opts = vim.tbl_extend("force", fzf_opts, {
