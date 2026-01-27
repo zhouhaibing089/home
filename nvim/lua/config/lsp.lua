@@ -1,7 +1,9 @@
-vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+local fzf = require("fzf-lua")
+
+vim.keymap.set("n", "gd", fzf.lsp_definitions)
+vim.keymap.set("n", "gD", fzf.lsp_declarations)
+vim.keymap.set("n", "gi", fzf.lsp_implementations)
+vim.keymap.set("n", "gr", fzf.lsp_references, opts)
 vim.keymap.set("n", "K", function()
 	vim.lsp.buf.hover({ border = "rounded" })
 end, opts)
