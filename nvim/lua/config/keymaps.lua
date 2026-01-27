@@ -23,3 +23,9 @@ vim.keymap.set(
 
 -- reload configuration
 vim.keymap.set("n", "<leader>r", ":source $MYVIMRC<CR>", { desc = "reload configuration" })
+
+-- center your cursor while search and move
+vim.keymap.set("n", "n", "nzz", { desc = "next search result and center" })
+vim.keymap.set("n", "N", "Nzz", { desc = "prev search result and center" })
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
