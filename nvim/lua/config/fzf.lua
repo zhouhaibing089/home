@@ -38,12 +38,16 @@ local function find_files(opts, dir, query)
 	elseif #opts.fargs > 0 then
 		query = opts.args
 	end
-	cmd = "fd -t f -H -L -E .git " .. vim.fn.shellescape(query) .. " " .. dir
+	cmd = "fd -t f -H -L -E .git -p " .. vim.fn.shellescape(query)
+	if dir ~= "" and dir ~= "." then
+		cmd = cmd .. " " .. dir
+	end
 	f_opts = vim.tbl_extend("force", exec_opts, {
 		winopts = {
 			title = " Files in " .. dir .. "/ ",
 		},
 		prompt = query == "" and "> " or (query .. " > "),
+		previewer = "builtin",
 	})
 	-- save the last grep state so it can be picked up later
 	vim.g.t = vim.tbl_extend("force", vim.g.t or {}, {
@@ -94,8 +98,9 @@ local function grep_files(opts, dir, query)
 		.. copts
 		.. " -- "
 		.. vim.fn.shellescape(query)
-		.. " "
-		.. dir
+	if dir ~= "" and dir ~= "." then
+		cmd = cmd .. " " .. dir
+	end
 	local f_opts = vim.tbl_extend("force", exec_opts, {
 		winopts = {
 			title = " Grep in " .. dir .. "/ ",
@@ -107,6 +112,7 @@ local function grep_files(opts, dir, query)
 			["--with-nth"] = "1,2,3,4..",
 		}),
 		prompt = query == "" and "> " or (query .. " > "),
+		previewer = "builtin",
 	})
 	-- save the last grep state so it can be picked up later
 	vim.g.t = vim.tbl_extend("force", vim.g.t or {}, {

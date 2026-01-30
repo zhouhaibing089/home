@@ -5,8 +5,9 @@ vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Window up" })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Window right" })
 
 -- copy and paste
-vim.keymap.set("x", "<leader>y", '"+y', { desc = "copy to system clipboard" })
-vim.keymap.set("n", "<leader>p", '"+p', { desc = "paste from system clipboard" })
+vim.keymap.set({ "x", "n" }, "<leader>y", '"+y', { desc = "copy to system clipboard" })
+vim.keymap.set("n", "<leader>p", '"+p', { desc = "paste after from system clipboard" })
+vim.keymap.set("n", "<leader>P", '"+P', { desc = "paste before from system clipboard" })
 vim.keymap.set({ "n", "x" }, "<leader>cp", ':let @+ = expand("%:p")<CR>', { desc = "copy full path of current buffer" })
 vim.keymap.set(
 	{ "n", "x" },
@@ -37,3 +38,12 @@ vim.keymap.set("n", "<Esc>", function()
 	end
 	return "<Esc>"
 end, { expr = true, desc = "clear highlights if they exist" })
+
+-- up/down selection in command completion
+vim.opt.wildmode = { "longest:full", "full" }
+vim.keymap.set("c", "<Up>", function()
+	return vim.fn.wildmenumode() == 1 and "<C-p>" or "<Up>"
+end, { expr = true, noremap = true })
+vim.keymap.set("c", "<Down>", function()
+	return vim.fn.wildmenumode() == 1 and "<C-n>" or "<Down>"
+end, { expr = true, noremap = true })
