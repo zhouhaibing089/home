@@ -15,11 +15,15 @@ local fzf_actions = {
 	["ctrl-s"] = actions.file_split,
 	["ctrl-v"] = actions.file_vsplit,
 }
-local exec_opts = {
-	cwd = vim.uv.cwd(),
-	actions = fzf_actions,
-	fzf_opts = fzf_opts,
-}
+-- exec_opts needs to be a function because vim.uv.cwd() can be different in
+-- each invocation, in particular in different tabs.
+local exec_opts = function()
+	return {
+		cwd = vim.uv.cwd(),
+		actions = fzf_actions,
+		fzf_opts = fzf_opts,
+	}
+end
 
 local function get_visual_selection()
 	-- visual mode with selection that in the same line
@@ -42,7 +46,7 @@ local function find_files(opts, dir, query)
 	if dir ~= "" and dir ~= "." then
 		cmd = cmd .. " " .. dir
 	end
-	f_opts = vim.tbl_extend("force", exec_opts, {
+	f_opts = vim.tbl_extend("force", exec_opts(), {
 		winopts = {
 			title = " Files in " .. dir .. "/ ",
 		},
@@ -101,7 +105,7 @@ local function grep_files(opts, dir, query)
 	if dir ~= "" and dir ~= "." then
 		cmd = cmd .. " " .. dir
 	end
-	local f_opts = vim.tbl_extend("force", exec_opts, {
+	local f_opts = vim.tbl_extend("force", exec_opts(), {
 		winopts = {
 			title = " Grep in " .. dir .. "/ ",
 		},
