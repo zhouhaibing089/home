@@ -1,4 +1,5 @@
 local fzf = require("fzf-lua")
+local conform = require("conform")
 
 -- These are the most significant keybindings, so making it short
 vim.keymap.set("n", "<leader>d", fzf.lsp_definitions)
@@ -15,7 +16,7 @@ vim.keymap.set("n", "<leader>H", function()
 end, opts)
 vim.keymap.set("n", "<leader>n", vim.lsp.buf.rename)
 vim.keymap.set("n", "<leader>f", function()
-	vim.lsp.buf.format({ async = true })
+	conform.format({ lsp_fallback = true })
 end, opts)
 
 -- set capabilities for all installed lsp servers

@@ -17,7 +17,7 @@ return {
 					return vim.g.t.cwd or ""
 				end,
 			},
-			lualine_y = {},
+			lualine_y = { "filetype" },
 			lualine_z = {},
 		},
 		inactive_sections = {
@@ -35,6 +35,7 @@ return {
 					return vim.g.t.cwd or ""
 				end,
 			},
+			lualine_y = { "filetype" },
 		},
 		extensions = {
 			"neo-tree",

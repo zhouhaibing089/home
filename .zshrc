@@ -1,6 +1,6 @@
 # whatever comes from the work setup, let it be imported first (so we can
 # override later)
-if [[ ! ${TMUX} && -f ${HOME}/.zshrc.work ]]; then
+if [[ -f ${HOME}/.zshrc.work ]]; then
   source ${HOME}/.zshrc.work
 fi
 
@@ -49,7 +49,6 @@ else
   eval $(gdircolors ${HOME}/.dircolors.dark)
   plugins=(git kube-ps1)
 fi
-
 
 if [[ ${TMUX} ]]; then
   wname=$(tmux display-message -p '#W')
