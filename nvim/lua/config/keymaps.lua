@@ -47,3 +47,14 @@ end, { expr = true, noremap = true })
 vim.keymap.set("c", "<Down>", function()
 	return vim.fn.wildmenumode() == 1 and "<C-n>" or "<Down>"
 end, { expr = true, noremap = true })
+
+-- switch tabs
+vim.keymap.set("n", "<leader>1", "1gt", { desc = "go to tab1" })
+vim.keymap.set("n", "<leader>2", "2gt", { desc = "go to tab2" })
+vim.keymap.set("n", "<leader>3", "3gt", { desc = "go to tab3" })
+vim.keymap.set("n", "<leader>4", "4gt", { desc = "go to tab4" })
+vim.keymap.set("n", "<leader>5", "5gt", { desc = "go to tab5" })
+vim.keymap.set("n", "<leader>6", "6gt", { desc = "go to tab6" })
+vim.keymap.set("n", "<leader>7", "7gt", { desc = "go to tab7" })
+vim.keymap.set("n", "<leader>8", "8gt", { desc = "go to tab8" })
+vim.keymap.set("n", "<leader>9", "9gt", { desc = "go to tab9" })

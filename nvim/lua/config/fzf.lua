@@ -39,6 +39,9 @@ local function find_files(opts, dir, query)
 	local query = query or ""
 	if opts.range == 2 and opts.line1 == opts.line2 then
 		query = get_visual_selection()
+		-- normalize path a little bit
+		query = vim.fn.simplify(query)
+		query = query:gsub("^([%.%.%/|%.%/]+)", "")
 	elseif #opts.fargs > 0 then
 		query = opts.args
 	end
