@@ -38,7 +38,7 @@ export ZSH="${HOME}/.oh-my-zsh"
 export SOLARIZED_THEME=dark
 export EDITOR=vim
 
-if [[ ${ZED_TERM} != "true" && ${VSCODE_INJECTION} != "1" && -z ${NVIM:-""} ]]; then
+if [[ ${ZED_TERM} != "true" && ${VSCODE_INJECTION} != "1" ]]; then
   ZSH_THEME="blinks"
 fi
 

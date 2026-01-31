@@ -9,3 +9,4 @@ vim.opt.mmp = 5000
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.incsearch = true
+vim.opt.termguicolors = true
