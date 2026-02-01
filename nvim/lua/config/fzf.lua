@@ -170,3 +170,42 @@ vim.keymap.set("n", "<leader>fp", function()
 	vim.g.t = t
 	vim.cmd("redrawstatus")
 end, { desc = "pin directory" })
+
+local function git_blame_lines(opts)
+	local name = vim.fn.expand("%")
+	local line = vim.fn.line(".") .. "," .. vim.fn.line(".")
+	if opts.range == 2 then
+		line = opts.line1 .. "," .. opts.line2
+	end
+
+	local flag = " -L " .. line .. " -- " .. name
+	local cmd = "git blame --color-lines " .. flag
+	local f_opts = vim.tbl_extend("force", exec_opts(), {
+		winopts = {
+			title = " Git Blame (" .. line .. ") ",
+		},
+		preview = "git show --color {1} -- " .. name,
+		actions = {
+			["enter"] = actions.git_goto_line,
+			["ctrl-s"] = actions.git_buf_split,
+			["ctrl-v"] = actions.git_buf_vsplit,
+			["ctrl-t"] = actions.git_buf_tabedit,
+			["ctrl-y"] = { fn = actions.git_yank_commit, exec_silent = true },
+		},
+	})
+	vim.notify(cmd, vim.log.levels.DEBUG)
+	fzf.fzf_exec(cmd, f_opts)
+end
+vim.api.nvim_create_user_command("Gb", git_blame_lines, {
+	desc = "git blame lines",
+	nargs = 0,
+	range = true,
+})
+
+-- gb for line(s) commits and gB for file commits
+vim.keymap.set({ "n", "x" }, "<leader>gb", ":Gb<CR>", {
+	desc = "git commits for lines",
+})
+vim.keymap.set({ "n" }, "<leader>gB", ":FzfLua git_blame<CR>", {
+	desc = "git commits for buffer",
+})
