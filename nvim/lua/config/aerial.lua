@@ -1,1 +1,1 @@
-vim.keymap.set("n", "<leader>ds", ":AerialToggle!<CR>")
+vim.keymap.set("n", "<leader>s", ":AerialToggle!<CR>", { desc = "document symbols" })

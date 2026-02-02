@@ -139,12 +139,12 @@ vim.api.nvim_create_user_command("FG", function(opts)
 end, { desc = "find files", nargs = "*", range = true })
 
 -- fF (current buffer's directory), ff (workspace)
-vim.keymap.set({ "n", "x" }, "<leader>ff", ":Ff<CR>")
-vim.keymap.set({ "n", "x" }, "<leader>fF", ":FF<CR>")
-vim.keymap.set("n", "<leader>fb", ":FzfLua buffers<CR>")
+vim.keymap.set({ "n", "x" }, "<leader>ff", ":Ff<CR>", { desc = "find files" })
+vim.keymap.set({ "n", "x" }, "<leader>fF", ":FF<CR>", { desc = "find files in buffer dir" })
+vim.keymap.set("n", "<leader>fb", ":FzfLua buffers<CR>", { desc = "find buffers" })
 -- fG (current buffer's directory), fg (workspace)
-vim.keymap.set({ "n", "x" }, "<leader>fg", ":Fg<CR>")
-vim.keymap.set({ "n", "x" }, "<leader>fG", ":FG<CR>")
+vim.keymap.set({ "n", "x" }, "<leader>fg", ":Fg<CR>", { desc = "file grep" })
+vim.keymap.set({ "n", "x" }, "<leader>fG", ":FG<CR>", { desc = "file grep in buffer dir" })
 vim.keymap.set("n", "<leader>f.", function()
 	vim.g.t = vim.g.t or {}
 	local cmd = vim.g.t.cmd or nil
@@ -152,8 +152,8 @@ vim.keymap.set("n", "<leader>f.", function()
 	if cmd and f_opts then
 		fzf.fzf_exec(cmd, f_opts)
 	end
-end)
-vim.keymap.set("n", "<leader>ft", ":FzfLua tags<CR>")
+end, { desc = "fuzzy repeat" })
+vim.keymap.set("n", "<leader>ft", ":FzfLua tags<CR>", { desc = "find tags" })
 -- pin to current buffer's directory
 vim.keymap.set("n", "<leader>fp", function()
 	t = vim.g.t or {}
@@ -169,7 +169,7 @@ vim.keymap.set("n", "<leader>fp", function()
 	end
 	vim.g.t = t
 	vim.cmd("redrawstatus")
-end, { desc = "pin directory" })
+end, { desc = "pin directory for next fuzzy find" })
 
 local function git_blame_lines(opts)
 	local name = vim.fn.expand("%")
