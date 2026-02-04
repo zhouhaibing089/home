@@ -5,7 +5,6 @@ for name in pairs(package.loaded) do
 end
 
 require("config.options")
-require("config.neovide")
 require("config.lazy")
 require("config.keymaps")
 require("config.neotree")
