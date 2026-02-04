@@ -8,6 +8,7 @@ vim.keymap.set("n", "<leader>i", fzf.lsp_implementations, { desc = "implementati
 vim.keymap.set("n", "<leader>r", fzf.lsp_references, { desc = "references" })
 vim.keymap.set("n", "<leader>e", fzf.diagnostics_document, { desc = "document diagnostics" })
 vim.keymap.set("n", "<leader>E", fzf.diagnostics_workspace, { desc = "workspace diagnostics" })
+vim.keymap.set("n", "<leader>a", fzf.lsp_acde_actions, { desc = "code actions" })
 vim.keymap.set("n", "<leader>h", function()
 	vim.lsp.buf.hover({ border = "rounded" })
 end, { desc = "lsp help" })
