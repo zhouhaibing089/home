@@ -19,7 +19,7 @@ local fzf_actions = {
 -- each invocation, in particular in different tabs.
 local exec_opts = function()
 	return {
-		cwd = vim.uv.cwd(),
+		cwd = vim.fn.getcwd(),
 		actions = fzf_actions,
 		fzf_opts = fzf_opts,
 	}
