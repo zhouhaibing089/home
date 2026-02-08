@@ -18,7 +18,11 @@ return {
 				end,
 			},
 			lualine_y = { "filetype" },
-			lualine_z = {},
+			lualine_z = {
+				function()
+					return vim.fn.fnamemodify(vim.fn.getcwd(0), ":t")
+				end,
+			},
 		},
 		inactive_sections = {
 			lualine_a = { "mode" },
@@ -36,6 +40,11 @@ return {
 				end,
 			},
 			lualine_y = { "filetype" },
+			lualine_z = {
+				function()
+					return vim.fn.fnamemodify(vim.fn.getcwd(0), ":t")
+				end,
+			},
 		},
 		extensions = {
 			"neo-tree",
