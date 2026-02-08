@@ -8,6 +8,7 @@ return {
 			},
 			sources = { "filesystem", "buffers" },
 			filesystem = {
+				bind_to_cwd = false,
 				hijack_netrw_behavior = "disabled", -- don't show by default
 				filtered_items = {
 					hide_dotfiles = false,
