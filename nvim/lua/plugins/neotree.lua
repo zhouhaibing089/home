@@ -4,13 +4,10 @@ return {
 		branch = "v3.x",
 		opts = {
 			window = {
-				position = "left",
-				width = 60,
-				auto_expand_width = true,
+				position = "float",
 			},
-			sources = { "filesystem", "buffers", "git_status", "document_symbols" },
+			sources = { "filesystem", "buffers" },
 			filesystem = {
-				use_libuv_file_watcher = true,
 				filtered_items = {
 					hide_dotfiles = false,
 					hide_gitignored = false,
