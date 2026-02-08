@@ -209,3 +209,13 @@ vim.keymap.set({ "n", "x" }, "<leader>gb", ":Gb<CR>", {
 vim.keymap.set({ "n" }, "<leader>gB", ":FzfLua git_blame<CR>", {
 	desc = "git commits for buffer",
 })
+-- show file finder by default
+vim.api.nvim_create_autocmd("VimEnter", {
+	callback = function()
+		local arg = vim.fn.argv(0)
+		if arg ~= "" and vim.fn.isdirectory(arg) == 1 then
+			vim.cmd.tcd(arg)
+			vim.cmd("Ff")
+		end
+	end,
+})
