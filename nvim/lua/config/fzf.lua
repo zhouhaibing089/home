@@ -61,7 +61,6 @@ local function find_files(opts, dir, query)
 		cmd = cmd,
 		exec_opts = f_opts,
 	})
-	vim.notify(cmd, vim.log.levels.DEBUG)
 	fzf.fzf_exec(cmd, f_opts)
 end
 
@@ -126,7 +125,6 @@ local function grep_files(opts, dir, query)
 		cmd = cmd,
 		exec_opts = f_opts,
 	})
-	vim.notify(cmd, vim.log.levels.DEBUG)
 	fzf.fzf_exec(cmd, f_opts)
 end
 
@@ -215,6 +213,15 @@ vim.api.nvim_create_autocmd("VimEnter", {
 		local arg = vim.fn.argv(0)
 		if arg ~= "" and vim.fn.isdirectory(arg) == 1 then
 			vim.cmd.tcd(arg)
+			vim.cmd("Ff")
+		end
+	end,
+})
+vim.api.nvim_create_autocmd("TabNewEntered", {
+	callback = function()
+		local name = vim.api.nvim_buf_get_name(0)
+		if name ~= "" and vim.fn.isdirectory(name) == 1 then
+			vim.cmd.tcd(name)
 			vim.cmd("Ff")
 		end
 	end,
