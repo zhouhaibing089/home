@@ -58,3 +58,8 @@ vim.keymap.set("n", "<leader>6", "6gt", { desc = "go to tab6" })
 vim.keymap.set("n", "<leader>7", "7gt", { desc = "go to tab7" })
 vim.keymap.set("n", "<leader>8", "8gt", { desc = "go to tab8" })
 vim.keymap.set("n", "<leader>9", "9gt", { desc = "go to tab9" })
+
+-- splits
+vim.keymap.set("n", "<leader>|", "<C-w>|", { desc = "take full width" })
+vim.keymap.set("n", "<leader>_", "<C-w>_", { desc = "take full height" })
+vim.keymap.set("n", "<leader>=", "<C-w>=", { desc = "balance width or height" })

@@ -1,6 +1,25 @@
-vim.keymap.set("n", "<leader>tf", ":ToggleTerm 1 direction=float<CR>")
-vim.keymap.set("n", "<leader>tb", ":ToggleTerm 2 direction=horizontal<CR>")
--- hopefully it doesn't interfere too much when I actually need <leader>tf or
--- <leader>tb in actual insert mode.
-vim.keymap.set("n", "<leader>tf", "<C-\\><C-n>:ToggleTerm 1 direction=float<CR>")
-vim.keymap.set("n", "<leader>tb", "<C-\\><C-n>:ToggleTerm 2 direction=horizontal<CR>")
+local Terminal = require("toggleterm.terminal").Terminal
+local terms = {}
+
+vim.keymap.set("n", "<leader>tf", function()
+	local count = vim.fn.tabpagenr() * 10 + 1
+	if not terms[count] then
+		terms[count] = Terminal:new({
+			count = count,
+			direction = "float",
+			dir = vim.fn.getcwd(),
+		})
+	end
+	terms[count]:toggle()
+end)
+vim.keymap.set("n", "<leader>tb", function()
+	local count = vim.fn.tabpagenr() * 10 + 2
+	if not terms[count] then
+		terms[count] = Terminal:new({
+			count = count,
+			direction = "horizontal",
+			dir = vim.fn.getcwd(),
+		})
+	end
+	terms[count]:toggle()
+end)

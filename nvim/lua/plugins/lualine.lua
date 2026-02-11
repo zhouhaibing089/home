@@ -13,8 +13,7 @@ return {
 
 			lualine_x = {
 				function()
-					vim.g.t = vim.g.t or {}
-					return vim.g.t.cwd or ""
+					return vim.t.cwd or ""
 				end,
 			},
 			lualine_y = { "filetype" },
@@ -35,8 +34,8 @@ return {
 			},
 			lualine_x = {
 				function()
-					vim.g.t = vim.g.t or {}
-					return vim.g.t.cwd or ""
+					vim.t = vim.t or {}
+					return vim.t.cwd or ""
 				end,
 			},
 			lualine_y = { "filetype" },

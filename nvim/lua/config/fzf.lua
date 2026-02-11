@@ -57,16 +57,15 @@ local function find_files(opts, dir, query)
 		previewer = "builtin",
 	})
 	-- save the last grep state so it can be picked up later
-	vim.g.t = vim.tbl_extend("force", vim.g.t or {}, {
+	vim.t.fzf = {
 		cmd = cmd,
 		exec_opts = f_opts,
-	})
+	}
 	fzf.fzf_exec(cmd, f_opts)
 end
 
 vim.api.nvim_create_user_command("Ff", function(opts)
-	local t = vim.g.t or {}
-	find_files(opts, t.cwd or "")
+	find_files(opts, vim.t.cwd or "")
 end, { desc = "find files", nargs = "*", range = true })
 vim.api.nvim_create_user_command("FF", function(opts)
 	find_files(opts, vim.fn.expand("%:p:.:h"))
@@ -121,16 +120,15 @@ local function grep_files(opts, dir, query)
 		previewer = "builtin",
 	})
 	-- save the last grep state so it can be picked up later
-	vim.g.t = vim.tbl_extend("force", vim.g.t or {}, {
+	vim.t.fzf = {
 		cmd = cmd,
 		exec_opts = f_opts,
-	})
+	}
 	fzf.fzf_exec(cmd, f_opts)
 end
 
 vim.api.nvim_create_user_command("Fg", function(opts)
-	local t = vim.g.t or {}
-	grep_files(opts, t.cwd or "")
+	grep_files(opts, vim.t.cwd or "")
 end, { desc = "find files", nargs = "*", range = true })
 vim.api.nvim_create_user_command("FG", function(opts)
 	grep_files(opts, vim.fn.expand("%:p:.:h"))
@@ -144,9 +142,9 @@ vim.keymap.set("n", "<leader>fb", ":FzfLua buffers<CR>", { desc = "find buffers"
 vim.keymap.set({ "n", "x" }, "<leader>fg", ":Fg<CR>", { desc = "file grep" })
 vim.keymap.set({ "n", "x" }, "<leader>fG", ":FG<CR>", { desc = "file grep in buffer dir" })
 vim.keymap.set("n", "<leader>f.", function()
-	vim.g.t = vim.g.t or {}
-	local cmd = vim.g.t.cmd or nil
-	local f_opts = vim.g.t.exec_opts or nil
+	f = vim.t.fzf or {}
+	local cmd = f.cmd or nil
+	local f_opts = f.exec_opts or nil
 	if cmd and f_opts then
 		fzf.fzf_exec(cmd, f_opts)
 	end
@@ -154,18 +152,16 @@ end, { desc = "fuzzy repeat" })
 vim.keymap.set("n", "<leader>ft", ":FzfLua tags<CR>", { desc = "find tags" })
 -- pin to current buffer's directory
 vim.keymap.set("n", "<leader>fp", function()
-	t = vim.g.t or {}
-	if t.cwd then
-		t.cwd = nil
+	if vim.t.cwd then
+		vim.t.cwd = nil
 	else
 		cwd = vim.fn.expand("%:p:.:h")
 		if cwd ~= "." then
-			t.cwd = cwd
+			vim.t.cwd = cwd
 		else
-			t.cwd = nil
+			vim.t.cwd = nil
 		end
 	end
-	vim.g.t = t
 	vim.cmd("redrawstatus")
 end, { desc = "pin directory for next fuzzy find" })
 
@@ -191,7 +187,6 @@ local function git_blame_lines(opts)
 			["ctrl-y"] = { fn = actions.git_yank_commit, exec_silent = true },
 		},
 	})
-	vim.notify(cmd, vim.log.levels.DEBUG)
 	fzf.fzf_exec(cmd, f_opts)
 end
 vim.api.nvim_create_user_command("Gb", git_blame_lines, {
