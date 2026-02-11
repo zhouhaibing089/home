@@ -51,7 +51,7 @@ else
 fi
 
 if [[ ${TMUX} ]]; then
-  wname=$(tmux display-message -p '#W')
+  wname=$(tmux display-message -p -t "$TMUX_PANE" '#W')
   kubectl config get-contexts ${wname} &>/dev/null
   if [[ $? -eq 0 ]]; then
     # additional steps like proxy and other aliases
