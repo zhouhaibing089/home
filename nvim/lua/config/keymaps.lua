@@ -21,6 +21,10 @@ vim.keymap.set(
 	':let @+ = expand("%:p:.:h")<CR>',
 	{ desc = "copy relative directory of current buffer" }
 )
+-- last yank goes to unnamed register as well as 0, to paste from last yank
+-- reliably, I would like to have <leader>0. Don't confuse this with tab
+-- switches as tab number is never 0. :)
+vim.keymap.set("n", "<leader>0", '"0p', { desc = "paste from register 0" })
 
 -- reload configuration
 vim.keymap.set("n", "<leader>R", ":source $MYVIMRC<CR>", { desc = "reload configuration" })
