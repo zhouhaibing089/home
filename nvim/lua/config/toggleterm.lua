@@ -9,7 +9,7 @@ vim.keymap.set("n", "<leader>tf", function()
 			direction = "float",
 		})
 	end
-	terms[count].dir = vim.fn.getcwd()
+	terms[count].dir = vim.t.cwd or vim.fn.getcwd()
 	terms[count]:toggle()
 end)
 vim.keymap.set("n", "<leader>tb", function()
@@ -20,6 +20,6 @@ vim.keymap.set("n", "<leader>tb", function()
 			direction = "horizontal",
 		})
 	end
-	terms[count].dir = vim.fn.getcwd()
+	terms[count].dir = vim.t.cwd or vim.fn.getcwd()
 	terms[count]:toggle()
 end)
