@@ -7,9 +7,9 @@ vim.keymap.set("n", "<leader>tf", function()
 		terms[count] = Terminal:new({
 			count = count,
 			direction = "float",
-			dir = vim.fn.getcwd(),
 		})
 	end
+	terms[count].dir = vim.fn.getcwd()
 	terms[count]:toggle()
 end)
 vim.keymap.set("n", "<leader>tb", function()
@@ -18,8 +18,8 @@ vim.keymap.set("n", "<leader>tb", function()
 		terms[count] = Terminal:new({
 			count = count,
 			direction = "horizontal",
-			dir = vim.fn.getcwd(),
 		})
 	end
+	terms[count].dir = vim.fn.getcwd()
 	terms[count]:toggle()
 end)
