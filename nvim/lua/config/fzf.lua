@@ -195,13 +195,6 @@ vim.api.nvim_create_user_command("Gb", git_blame_lines, {
 	range = true,
 })
 
--- gb for line(s) commits and gB for file commits
-vim.keymap.set({ "n", "x" }, "<leader>gb", ":Gb<CR>", {
-	desc = "git commits for lines",
-})
-vim.keymap.set({ "n" }, "<leader>gB", ":FzfLua git_blame<CR>", {
-	desc = "git commits for buffer",
-})
 -- show file finder by default
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function()
