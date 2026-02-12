@@ -32,6 +32,9 @@ vim.keymap.set("n", "<leader>R", ":source $MYVIMRC<CR>", { desc = "reload config
 -- center your cursor while search and move
 vim.keymap.set("n", "n", "nzz", { desc = "next search result and center" })
 vim.keymap.set("n", "N", "Nzz", { desc = "prev search result and center" })
+vim.keymap.set("v", "<leader>/", [[y/\V<C-R>=escape(@",'/\')<CR><CR>]], {
+	desc = "Search visual selection",
+})
 
 -- buffer view
 vim.keymap.set("n", "<leader>j", "<C-d>zz", { desc = "half page down" })

@@ -19,7 +19,7 @@ end, { desc = "lsp signatures help" })
 vim.keymap.set("n", "<leader>n", vim.lsp.buf.rename, { desc = "rename" })
 vim.keymap.set("n", "<leader>f", function()
 	conform.format({ lsp_fallback = true })
-end, opts)
+end, { desc = "lsp format" })
 
 -- set capabilities for all installed lsp servers
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
