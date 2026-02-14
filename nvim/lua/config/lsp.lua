@@ -4,7 +4,7 @@ local conform = require("conform")
 -- These are the most significant keybindings, so making it short
 vim.keymap.set("n", "<leader>d", fzf.lsp_definitions, { desc = "definitions" })
 vim.keymap.set("n", "<leader>D", fzf.lsp_declarations, { desc = "declarations" })
-vim.keymap.set("n", "<leader>i", fzf.lsp_implementations, { desc = "implementations" })
+vim.keymap.set("n", "<leader>I", fzf.lsp_implementations, { desc = "implementations" })
 vim.keymap.set("n", "<leader>r", fzf.lsp_references, { desc = "references" })
 vim.keymap.set("n", "<leader>e", fzf.diagnostics_document, { desc = "document diagnostics" })
 vim.keymap.set("n", "<leader>E", fzf.diagnostics_workspace, { desc = "workspace diagnostics" })

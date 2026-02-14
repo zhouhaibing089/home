@@ -39,6 +39,8 @@ vim.keymap.set("v", "<leader>/", [[y/\V<C-R>=escape(@",'/\')<CR><CR>]], {
 -- buffer view
 vim.keymap.set("n", "<leader>j", "<C-d>zz", { desc = "half page down" })
 vim.keymap.set("n", "<leader>k", "<C-u>zz", { desc = "half page up" })
+vim.keymap.set("n", "<leader>i", "<C-i>", { desc = "go forward (in)" })
+vim.keymap.set("n", "<leader>o", "<C-o>", { desc = "go backward (out)" })
 
 -- clear highlights
 vim.keymap.set("n", "<Esc>", function()
