@@ -22,7 +22,7 @@ vim.keymap.set("n", "<leader>f", function()
 end, { desc = "lsp format" })
 
 -- set capabilities for all installed lsp servers
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local capabilities = require("blink.cmp").get_lsp_capabilities()
 for _, server in ipairs(require("mason-lspconfig").get_installed_servers()) do
 	vim.lsp.config(server, {
 		capabilities = capabilities,
