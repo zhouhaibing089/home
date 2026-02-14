@@ -19,6 +19,8 @@ return {
 			fzf = {
 				["ctrl-j"] = "down",
 				["ctrl-k"] = "up",
+				["ctrl-p"] = "up",
+				["ctrl-n"] = "down",
 			},
 		},
 	},
