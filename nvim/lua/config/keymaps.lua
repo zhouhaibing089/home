@@ -50,15 +50,6 @@ vim.keymap.set("n", "<Esc>", function()
 	return "<Esc>"
 end, { expr = true, desc = "clear highlights if they exist" })
 
--- up/down selection in command completion
-vim.opt.wildmode = { "longest:full", "full" }
-vim.keymap.set("c", "<Up>", function()
-	return vim.fn.wildmenumode() == 1 and "<C-p>" or "<Up>"
-end, { expr = true, noremap = true })
-vim.keymap.set("c", "<Down>", function()
-	return vim.fn.wildmenumode() == 1 and "<C-n>" or "<Down>"
-end, { expr = true, noremap = true })
-
 -- switch tabs
 vim.keymap.set("n", "<leader>1", "1gt", { desc = "go to tab1" })
 vim.keymap.set("n", "<leader>2", "2gt", { desc = "go to tab2" })

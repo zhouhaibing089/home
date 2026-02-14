@@ -9,6 +9,11 @@ return {
 	opts = {
 		keymap = {
 			preset = "none",
+			["<C-j>"] = {
+				"select_next",
+				"snippet_forward",
+				"fallback",
+			},
 			["<Tab>"] = {
 				"select_next",
 				"snippet_forward",
@@ -17,6 +22,11 @@ return {
 			["<Down>"] = {
 				"select_next",
 				"snippet_forward",
+				"fallback",
+			},
+			["<C-k>"] = {
+				"select_prev",
+				"snippet_backward",
 				"fallback",
 			},
 			["<S-Tab>"] = {
@@ -32,6 +42,16 @@ return {
 			["<CR>"] = {
 				"accept",
 				"fallback",
+			},
+		},
+		cmdline = {
+			enabled = true,
+			keymap = {
+				preset = "cmdline",
+				["<Up>"] = { "select_prev", "fallback" },
+				["<Down>"] = { "select_next", "fallback" },
+				["<C-k>"] = { "select_prev", "fallback" },
+				["<C-j>"] = { "select_next", "fallback" },
 			},
 		},
 		appearance = {

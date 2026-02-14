@@ -15,6 +15,12 @@ return {
 		winopts = {
 			preview = { layout = "vertical", size = "down:50%" },
 		},
+		keymap = {
+			fzf = {
+				["ctrl-j"] = "down",
+				["ctrl-k"] = "up",
+			},
+		},
 	},
 	---@diagnostic enable: missing-fields
 }
