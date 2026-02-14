@@ -45,13 +45,15 @@ local function find_files(opts, dir, query)
 	elseif #opts.fargs > 0 then
 		query = opts.args
 	end
-	cmd = "fd -t f -H -L -E .git -p " .. vim.fn.shellescape(query)
+	local cmd = "fd -t f -H -L -E .git -p " .. vim.fn.shellescape(query)
+	local title = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
 	if dir ~= "" and dir ~= "." then
 		cmd = cmd .. " " .. dir
+		title = title .. "/" .. dir
 	end
 	f_opts = vim.tbl_extend("force", exec_opts(), {
 		winopts = {
-			title = " Files in " .. dir .. "/ ",
+			title = " Files in " .. title .. " ",
 		},
 		prompt = query == "" and "> " or (query .. " > "),
 		previewer = "builtin",
@@ -103,12 +105,14 @@ local function grep_files(opts, dir, query)
 		.. copts
 		.. " -- "
 		.. vim.fn.shellescape(query)
+	local title = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
 	if dir ~= "" and dir ~= "." then
 		cmd = cmd .. " " .. dir
+		title = title .. "/" .. dir
 	end
 	local f_opts = vim.tbl_extend("force", exec_opts(), {
 		winopts = {
-			title = " Grep in " .. dir .. "/ ",
+			title = " Grep in " .. title .. " ",
 		},
 		line_field_index = "{2}",
 		fzf_opts = vim.tbl_extend("force", fzf_opts, {
@@ -203,13 +207,31 @@ vim.keymap.set({ "n" }, "<leader>gB", ":FzfLua git_blame<CR>", {
 	desc = "git commits for buffer",
 })
 
+-- a customized explore page for new tab - you can search filenames or contents
+local function explore()
+	local cmd = "rg --column -n -L --no-heading --color=always -S -. " .. "-g '!.git/*' ''"
+	local f_opts = vim.tbl_extend("force", exec_opts(), {
+		winopts = {
+			title = " Explore in " .. vim.fn.expand("%:p:h:t") .. " ",
+		},
+		prompt = "> ",
+		previewer = "builtin",
+	})
+	-- save the last grep state so it can be picked up later
+	vim.t.fzf = {
+		cmd = cmd,
+		exec_opts = f_opts,
+	}
+	fzf.fzf_exec(cmd, f_opts)
+end
+
 -- show file finder by default
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function()
 		local arg = vim.fn.argv(0)
 		if arg ~= "" and vim.fn.isdirectory(arg) == 1 then
 			vim.cmd.tcd(arg)
-			vim.cmd("Ff")
+			explore()
 		end
 	end,
 })
@@ -218,7 +240,7 @@ vim.api.nvim_create_autocmd("TabNewEntered", {
 		local name = vim.api.nvim_buf_get_name(0)
 		if name ~= "" and vim.fn.isdirectory(name) == 1 then
 			vim.cmd.tcd(name)
-			vim.cmd("Ff")
+			explore()
 		end
 	end,
 })
