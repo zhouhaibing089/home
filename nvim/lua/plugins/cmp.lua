@@ -30,7 +30,7 @@ return {
 				"fallback",
 			},
 			["<Esc>"] = {
-				"hide",
+				"cancel",
 				"fallback",
 			},
 			["<CR>"] = {
@@ -41,7 +41,12 @@ return {
 		appearance = {
 			nerd_font_variant = "mono",
 		},
-		completion = { documentation = { auto_show = false } },
+		completion = {
+			documentation = { auto_show = false },
+			list = {
+				selection = { preselect = false },
+			},
+		},
 		sources = {
 			default = { "lsp", "path", "snippets", "buffer" },
 		},
