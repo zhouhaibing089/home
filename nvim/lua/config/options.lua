@@ -13,6 +13,7 @@ vim.opt.termguicolors = true
 vim.opt.fillchars = {
 	vert = "│",
 }
+vim.opt.title = true
 
 -- disable netrw
 vim.g.loaded_netrw = 1
