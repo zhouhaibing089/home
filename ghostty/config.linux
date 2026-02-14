@@ -1,0 +1,2 @@
+keybind = super+d=new_split:down
+keybind = super+shift+d=new_split:right

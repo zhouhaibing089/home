@@ -54,4 +54,9 @@ mkdir -p ${HOME}/.config/ghostty
 if [[ -f ${HOME}/.config/ghostty/config ]]; then
   rm -f ${HOME}/.config/ghostty/config
 fi
-ln -s $(pwd)/ghostty/config ${HOME}/.config/ghostty/config
+cp $(pwd)/ghostty/config ${HOME}/.config/ghostty/config
+if [[ $(uname) == "Linux" ]]; then
+  cat $(pwd)/ghostty/config.linux >>${HOME}/.config/ghostty/config
+else
+  cat $(pwd)/ghostty/config.osx >>${HOME}/.config/ghostty/config
+fi
