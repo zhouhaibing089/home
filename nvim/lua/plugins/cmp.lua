@@ -29,10 +29,6 @@ return {
 				"snippet_backward",
 				"fallback",
 			},
-			["<Esc>"] = {
-				"cancel",
-				"fallback",
-			},
 			["<CR>"] = {
 				"accept",
 				"fallback",
@@ -44,7 +40,12 @@ return {
 		completion = {
 			documentation = { auto_show = false },
 			list = {
-				selection = { preselect = false },
+				selection = {
+					-- do not insert text on highlight
+					auto_insert = false,
+					-- do not highlight the first selection
+					preselect = false,
+				},
 			},
 		},
 		sources = {
