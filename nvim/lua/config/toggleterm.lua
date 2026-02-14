@@ -9,7 +9,7 @@ vim.keymap.set("n", "<leader>tf", function()
 			direction = "float",
 		})
 	end
-	terms[count].dir = vim.fn.getcwd()
+	terms[count].dir = vim.t.cwd or vim.fn.getcwd()
 	terms[count]:toggle()
 end, { desc = "toggle floating terminal" })
 vim.keymap.set("n", "<leader>tb", function()
@@ -20,7 +20,7 @@ vim.keymap.set("n", "<leader>tb", function()
 			direction = "horizontal",
 		})
 	end
-	terms[count].dir = vim.fn.getcwd()
+	terms[count].dir = vim.t.cwd or vim.fn.getcwd()
 	terms[count]:toggle()
 end, { desc = "toggle bottom terminal" })
 vim.keymap.set("n", "<leader>tF", function()
@@ -31,9 +31,9 @@ vim.keymap.set("n", "<leader>tF", function()
 			direction = "float",
 		})
 	end
-	terms[count].dir = vim.t.cwd or vim.fn.getcwd()
+	terms[count].dir = vim.fn.expand("%:p:h")
 	terms[count]:toggle()
-end, { desc = "toggle floating terminal under pinned dir" })
+end, { desc = "toggle floating terminal from current buffer" })
 vim.keymap.set("n", "<leader>tB", function()
 	local count = vim.fn.tabpagenr() * 10 + 2
 	if not terms[count] then
@@ -42,6 +42,6 @@ vim.keymap.set("n", "<leader>tB", function()
 			direction = "horizontal",
 		})
 	end
-	terms[count].dir = vim.t.cwd or vim.fn.getcwd()
+	terms[count].dir = vim.fn.expand("%:p:h")
 	terms[count]:toggle()
-end, { desc = "toggle bottom terminal under pinned dir" })
+end, { desc = "toggle bottom terminal from current buffer" })
