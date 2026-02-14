@@ -14,6 +14,7 @@ vim.opt.fillchars = {
 	vert = "│",
 }
 vim.opt.title = true
+vim.opt.signcolumn = "yes:1"
 
 -- disable netrw
 vim.g.loaded_netrw = 1
