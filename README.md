@@ -9,21 +9,8 @@ I don't want to do all of customization again and again:
 
 ## Map Caps to Ctrl
 
-Install `keyd` package with:
-
 ```console
-$ pacman -S keyd
-$ systemctl enable --now keyd
-```
-
-Then add the following configuration in `/etc/keyd/default.conf`:
-
-```ini
-[ids]
-*
-
-[main]
-capslock = overload(control, capslock)
+$ gsettings set org.gnome.desktop.input-sources xkb-options "['ctrl:nocaps']"
 ```
 
 On macOS:
