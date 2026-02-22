@@ -43,6 +43,14 @@ return {
 				"accept",
 				"fallback",
 			},
+			["<C-p>"] = {
+				"scroll_documentation_up",
+				"fallback",
+			},
+			["<C-n>"] = {
+				"scroll_documentation_down",
+				"fallback",
+			},
 		},
 		cmdline = {
 			enabled = true,
@@ -58,7 +66,7 @@ return {
 			nerd_font_variant = "mono",
 		},
 		completion = {
-			documentation = { auto_show = false },
+			documentation = { auto_show = true, auto_show_delay_ms = 200 },
 			list = {
 				selection = {
 					-- do not insert text on highlight
