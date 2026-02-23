@@ -10,6 +10,8 @@ vim.keymap.set("n", "<leader>e", fzf.diagnostics_document, { desc = "document di
 vim.keymap.set("n", "<leader>E", fzf.diagnostics_workspace, { desc = "workspace diagnostics" })
 vim.keymap.set("n", "<leader>a", fzf.lsp_code_actions, { desc = "code actions" })
 vim.keymap.set("n", "<leader>s", fzf.lsp_document_symbols, { desc = "document symbols" })
+vim.keymap.set("n", "<leader>c", fzf.lsp_incoming_calls, { desc = "incoming calls" })
+vim.keymap.set("n", "<leader>C", fzf.lsp_outgoing_calls, { desc = "outgoing calls" })
 vim.keymap.set("n", "<leader>h", function()
 	vim.lsp.buf.hover({ border = "rounded" })
 end, { desc = "lsp help" })
