@@ -115,11 +115,11 @@ local function grep_files(opts, dir, query)
 			title = " Grep in " .. title .. " ",
 		},
 		line_field_index = "{2}",
-		fzf_opts = vim.tbl_extend("force", fzf_opts, query == "" and {} or {
+		fzf_opts = vim.tbl_extend("force", fzf_opts, query == "" and {
 			["--delimiter"] = ":",
 			["--nth"] = "4..",
 			["--with-nth"] = "1,2,3,4..",
-		}),
+		} or {}),
 		prompt = query == "" and "> " or (query .. " > "),
 		previewer = "builtin",
 	})
