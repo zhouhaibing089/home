@@ -138,6 +138,44 @@ vim.api.nvim_create_user_command("FG", function(opts)
 	grep_files(opts, vim.fn.expand("%:p:.:h"))
 end, { desc = "find files", nargs = "*", range = true })
 
+-- global -{d|r} --result=grep <func>
+local function global(opts, def, query)
+	local query = query or vim.fn.expand("<cword>")
+	if opts.range == 2 and opts.line1 == opts.line2 then
+		-- query from visual selection
+		query = get_visual_selection()
+	end
+	if def then
+		cmd = "global -d --result=grep "
+		title = " global definitions "
+	else
+		cmd = "global -r --result=grep "
+		title = " global references "
+	end
+	cmd = cmd .. vim.fn.shellescape(query)
+	local f_opts = vim.tbl_extend("force", exec_opts(), {
+		winopts = {
+			title = title,
+		},
+		fzf_opts = fzf_opts,
+		prompt = query .. " > ",
+		previewer = "builtin",
+	})
+	-- save the last grep state so it can be picked up later
+	vim.t.fzf = {
+		cmd = cmd,
+		exec_opts = f_opts,
+	}
+	fzf.fzf_exec(cmd, f_opts)
+end
+
+vim.api.nvim_create_user_command("Fd", function(opts)
+	global(opts, true)
+end, { desc = "global definitions", nargs = "*", range = true })
+vim.api.nvim_create_user_command("Fr", function(opts)
+	global(opts, false)
+end, { desc = "global references", nargs = "*", range = true })
+
 -- fF (current buffer's directory), ff (workspace)
 vim.keymap.set({ "n", "x" }, "<leader>ff", ":Ff<CR>", { desc = "find files" })
 vim.keymap.set({ "n", "x" }, "<leader>fF", ":FF<CR>", { desc = "find files in buffer dir" })

@@ -1,1 +1,2 @@
-vim.keymap.set("n", "<leader>d", "g<C-]>", { buffer = true, desc = "Jump to definition" })
+vim.keymap.set({ "n", "v" }, "<leader>d", ":Fd<CR>", { buffer = true, desc = "Find definitions" })
+vim.keymap.set({ "n", "v" }, "<leader>r", ":Fr<CR>", { buffer = true, desc = "Find references" })
