@@ -1,4 +1,4 @@
-require('neovim-treesitter').install { 'terraform', 'c', 'python', 'go' }
+require('nvim-treesitter').install { 'terraform', 'c', 'python', 'go' }
 vim.api.nvim_create_autocmd('FileType', {
     pattern = { 'terraform', 'c', 'python', 'go' },
     callback = function()
