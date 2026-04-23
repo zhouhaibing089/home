@@ -15,6 +15,7 @@ vim.opt.fillchars = {
 }
 vim.opt.title = true
 vim.opt.signcolumn = "yes:1"
+vim.opt.showmode = false
 
 -- disable netrw
 vim.g.loaded_netrw = 1
