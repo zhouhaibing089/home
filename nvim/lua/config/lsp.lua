@@ -30,3 +30,13 @@ for _, server in ipairs(require("mason-lspconfig").get_installed_servers()) do
 		capabilities = capabilities,
 	})
 end
+
+-- disable semanticTokensProvider for terraformls as there is currently a bug
+vim.api.nvim_create_autocmd("LspAttach", {
+	callback = function(args)
+		local client = vim.lsp.get_client_by_id(args.data.client_id)
+		if client and client.name == "terraformls" then
+			client.server_capabilities.semanticTokensProvider = nil
+		end
+	end,
+})

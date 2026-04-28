@@ -22,6 +22,7 @@ local exec_opts = function()
 		cwd = vim.fn.getcwd(),
 		actions = fzf_actions,
 		fzf_opts = fzf_opts,
+		no_hide = true, -- tear down fzf on abort/accept
 	}
 end
 

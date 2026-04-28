@@ -12,6 +12,7 @@ return {
 	---@type fzf-lua.Config|{}
 	---@diagnostic disable: missing-fields
 	opts = {
+		no_hide = true,
 		winopts = {
 			preview = { layout = "vertical", size = "down:50%" },
 		},
