@@ -14,6 +14,16 @@ local fzf_actions = {
 	["default"] = actions.file_edit,
 	["ctrl-s"] = actions.file_split,
 	["ctrl-v"] = actions.file_vsplit,
+	-- save the live query
+	change = {
+		fn = function(selected)
+			local state = vim.t.fzf or {}
+			state.query = selected[1] or ""
+			vim.t.fzf = state
+		end,
+		field_index = "{q}",
+		exec_silent = true,
+	},
 }
 -- exec_opts needs to be a function because vim.uv.cwd() can be different in
 -- each invocation, in particular in different tabs.
@@ -23,7 +33,18 @@ local exec_opts = function()
 		actions = fzf_actions,
 		fzf_opts = fzf_opts,
 		no_hide = true, -- tear down fzf on abort/accept
+		no_resume = true, -- use <leader>f. for tab-aware resume
 	}
+end
+
+-- fzf_exec saves the state before calling into fzf.fzf_exec
+local fzf_exec = function(cmd, f_opts)
+	-- save the last grep state so it can be picked up later
+	vim.t.fzf = {
+		cmd = cmd,
+		exec_opts = f_opts,
+	}
+	fzf.fzf_exec(cmd, f_opts)
 end
 
 local function get_visual_selection()
@@ -59,12 +80,7 @@ local function find_files(opts, dir, query)
 		prompt = query == "" and "> " or (query .. " > "),
 		previewer = "builtin",
 	})
-	-- save the last grep state so it can be picked up later
-	vim.t.fzf = {
-		cmd = cmd,
-		exec_opts = f_opts,
-	}
-	fzf.fzf_exec(cmd, f_opts)
+	fzf_exec(cmd, f_opts)
 end
 
 vim.api.nvim_create_user_command("Ff", function(opts)
@@ -124,12 +140,7 @@ local function grep_files(opts, dir, query)
 		prompt = query == "" and "> " or (query .. " > "),
 		previewer = "builtin",
 	})
-	-- save the last grep state so it can be picked up later
-	vim.t.fzf = {
-		cmd = cmd,
-		exec_opts = f_opts,
-	}
-	fzf.fzf_exec(cmd, f_opts)
+	fzf_exec(cmd, f_opts)
 end
 
 vim.api.nvim_create_user_command("Fg", function(opts)
@@ -162,12 +173,7 @@ local function global(opts, def, query)
 		prompt = query .. " > ",
 		previewer = "builtin",
 	})
-	-- save the last grep state so it can be picked up later
-	vim.t.fzf = {
-		cmd = cmd,
-		exec_opts = f_opts,
-	}
-	fzf.fzf_exec(cmd, f_opts)
+	fzf_exec(cmd, f_opts)
 end
 
 vim.api.nvim_create_user_command("Fd", function(opts)
@@ -184,14 +190,21 @@ vim.keymap.set("n", "<leader>fb", ":FzfLua buffers<CR>", { desc = "find buffers"
 -- fG (current buffer's directory), fg (workspace)
 vim.keymap.set({ "n", "x" }, "<leader>fg", ":Fg<CR>", { desc = "file grep" })
 vim.keymap.set({ "n", "x" }, "<leader>fG", ":FG<CR>", { desc = "file grep in buffer dir" })
+-- tab-aware resume
 vim.keymap.set("n", "<leader>f.", function()
 	f = vim.t.fzf or {}
 	local cmd = f.cmd or nil
-	local f_opts = f.exec_opts or nil
+	local f_opts = f.exec_opts and vim.deepcopy(f.exec_opts) or nil
+	local query = f.query or ""
 	if cmd and f_opts then
+		f_opts.query = query
 		fzf.fzf_exec(cmd, f_opts)
 	end
-end, { desc = "fuzzy repeat" })
+end, { desc = "fzf resume (customized)" })
+-- native resume
+vim.keymap.set("n", "<leader>fr", function()
+	fzf.resume()
+end, { desc = "fzf resume (native)" })
 vim.keymap.set("n", "<leader>ft", ":FzfLua tags<CR>", { desc = "find tags" })
 -- pin to current buffer's directory
 vim.keymap.set("n", "<leader>fp", function()
@@ -230,7 +243,7 @@ local function git_blame_lines(opts)
 			["ctrl-y"] = { fn = actions.git_yank_commit, exec_silent = true },
 		},
 	})
-	fzf.fzf_exec(cmd, f_opts)
+	fzf_exec(cmd, f_opts)
 end
 vim.api.nvim_create_user_command("Gb", git_blame_lines, {
 	desc = "git blame lines",
@@ -256,12 +269,7 @@ local function explore()
 		prompt = "> ",
 		previewer = "builtin",
 	})
-	-- save the last grep state so it can be picked up later
-	vim.t.fzf = {
-		cmd = cmd,
-		exec_opts = f_opts,
-	}
-	fzf.fzf_exec(cmd, f_opts)
+	fzf_exec(cmd, f_opts)
 end
 
 -- show file finder by default
