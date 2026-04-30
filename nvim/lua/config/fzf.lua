@@ -183,6 +183,27 @@ vim.api.nvim_create_user_command("Fr", function(opts)
 	global(opts, false)
 end, { desc = "global references", nargs = "*", range = true })
 
+-- source graph code search
+vim.api.nvim_create_user_command("Sg", function(opts)
+	local f_opts = vim.tbl_extend("force", exec_opts(), {
+		winopts = {
+			title = " Source Graph ",
+		},
+		previewer = "builtin",
+		no_resume = false,
+		no_hide = false,
+	})
+
+	fzf.fzf_live(function(items)
+		local q = items[1] or ""
+		if #q < 3 then
+			return ""
+		end
+		return "zoekt -index_dir .zoekt " .. vim.fn.shellescape(q)
+	end, f_opts)
+end, { desc = "source graph code search", nargs = 0 })
+vim.keymap.set("n", "<leader>sg", ":Sg<CR>", { desc = "source graph code search" })
+
 -- fF (current buffer's directory), ff (workspace)
 vim.keymap.set({ "n", "x" }, "<leader>ff", ":Ff<CR>", { desc = "find files" })
 vim.keymap.set({ "n", "x" }, "<leader>fF", ":FF<CR>", { desc = "find files in buffer dir" })
