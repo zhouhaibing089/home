@@ -184,7 +184,7 @@ vim.api.nvim_create_user_command("Fr", function(opts)
 end, { desc = "global references", nargs = "*", range = true })
 
 -- source graph code search
-vim.api.nvim_create_user_command("Sg", function(opts)
+vim.api.nvim_create_user_command("Zoekt", function(opts)
 	local f_opts = vim.tbl_extend("force", exec_opts(), {
 		winopts = {
 			title = " Source Graph ",
@@ -202,7 +202,34 @@ vim.api.nvim_create_user_command("Sg", function(opts)
 		return "zoekt -index_dir .zoekt " .. vim.fn.shellescape(q)
 	end, f_opts)
 end, { desc = "source graph code search", nargs = 0 })
-vim.keymap.set("n", "<leader>sg", ":Sg<CR>", { desc = "source graph code search" })
+vim.api.nvim_create_user_command("ZoektIndex", function(opts)
+	local cwd = vim.fn.getcwd()
+	local git_check = vim.system({ "git", "rev-parse", "--is-inside-work-tree" }, {
+		cwd = cwd,
+		text = true,
+	}):wait()
+	local cmd = git_check.code == 0 and "zoekt-git-index" or "zoekt-index"
+
+	vim.notify("Building zoekt index with " .. cmd, vim.log.levels.INFO)
+	vim.system({ cmd, "-index", ".zoekt", "." }, {
+		cwd = cwd,
+		text = true,
+	}, function(result)
+		vim.schedule(function()
+			if result.code == 0 then
+				vim.notify("Zoekt index updated in " .. cwd, vim.log.levels.INFO)
+				return
+			end
+
+			local err = vim.trim(result.stderr or "")
+			if err == "" then
+				err = "exit code " .. result.code
+			end
+			vim.notify("Zoekt indexing failed: " .. err, vim.log.levels.ERROR)
+		end)
+	end)
+end, { desc = "update source graph index"})
+vim.keymap.set("n", "<leader>sg", ":Zoekt<CR>", { desc = "source graph code search" })
 
 -- fF (current buffer's directory), ff (workspace)
 vim.keymap.set({ "n", "x" }, "<leader>ff", ":Ff<CR>", { desc = "find files" })
