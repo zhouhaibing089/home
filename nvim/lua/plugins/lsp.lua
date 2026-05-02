@@ -8,6 +8,7 @@ return {
 			"ruff",
 			"rust_analyzer",
 			"terraformls",
+			"lua_ls",
 		},
 	},
 	dependencies = {

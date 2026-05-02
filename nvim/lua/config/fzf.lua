@@ -58,7 +58,7 @@ local function get_visual_selection()
 end
 
 local function find_files(opts, dir, query)
-	local query = query or ""
+	query = query or ""
 	if opts.range == 2 and opts.line1 == opts.line2 then
 		query = get_visual_selection()
 		-- normalize path a little bit
@@ -73,7 +73,7 @@ local function find_files(opts, dir, query)
 		cmd = cmd .. " " .. dir
 		title = title .. "/" .. dir
 	end
-	f_opts = vim.tbl_extend("force", exec_opts(), {
+	local f_opts = vim.tbl_extend("force", exec_opts(), {
 		winopts = {
 			title = " Files in " .. title .. " ",
 		},
@@ -91,7 +91,7 @@ vim.api.nvim_create_user_command("FF", function(opts)
 end, { desc = "find files", nargs = "*", range = true })
 
 local function grep_files(opts, dir, query)
-	local query = query or ""
+	query = query or ""
 	local copts = "" -- additional command options
 	if opts.range == 2 and opts.line1 == opts.line2 then
 		-- query from visual selection
@@ -152,11 +152,12 @@ end, { desc = "find files", nargs = "*", range = true })
 
 -- global -{d|r} --result=grep <func>
 local function global(opts, def, query)
-	local query = query or vim.fn.expand("<cword>")
+	query = query or vim.fn.expand("<cword>")
 	if opts.range == 2 and opts.line1 == opts.line2 then
 		-- query from visual selection
 		query = get_visual_selection()
 	end
+	local cmd, title
 	if def then
 		cmd = "global -d --result=grep "
 		title = " global definitions "
@@ -184,7 +185,7 @@ vim.api.nvim_create_user_command("Fr", function(opts)
 end, { desc = "global references", nargs = "*", range = true })
 
 -- source graph code search
-vim.api.nvim_create_user_command("Zoekt", function(opts)
+vim.api.nvim_create_user_command("Zoekt", function(_)
 	local f_opts = vim.tbl_extend("force", exec_opts(), {
 		winopts = {
 			title = " Source Graph ",
@@ -202,7 +203,7 @@ vim.api.nvim_create_user_command("Zoekt", function(opts)
 		return "zoekt -index_dir .zoekt " .. vim.fn.shellescape(q)
 	end, f_opts)
 end, { desc = "source graph code search", nargs = 0 })
-vim.api.nvim_create_user_command("ZoektIndex", function(opts)
+vim.api.nvim_create_user_command("ZoektIndex", function(_)
 	local cwd = vim.fn.getcwd()
 	local git_check = vim.system({ "git", "rev-parse", "--is-inside-work-tree" }, {
 		cwd = cwd,
@@ -228,7 +229,7 @@ vim.api.nvim_create_user_command("ZoektIndex", function(opts)
 			vim.notify("Zoekt indexing failed: " .. err, vim.log.levels.ERROR)
 		end)
 	end)
-end, { desc = "update source graph index"})
+end, { desc = "update source graph index" })
 vim.keymap.set("n", "<leader>sg", ":Zoekt<CR>", { desc = "source graph code search" })
 
 -- fF (current buffer's directory), ff (workspace)
@@ -240,7 +241,7 @@ vim.keymap.set({ "n", "x" }, "<leader>fg", ":Fg<CR>", { desc = "file grep" })
 vim.keymap.set({ "n", "x" }, "<leader>fG", ":FG<CR>", { desc = "file grep in buffer dir" })
 -- tab-aware resume
 vim.keymap.set("n", "<leader>f.", function()
-	f = vim.t.fzf or {}
+	local f = vim.t.fzf or {}
 	local cmd = f.cmd or nil
 	local f_opts = f.exec_opts and vim.deepcopy(f.exec_opts) or nil
 	local query = f.query or ""
@@ -259,7 +260,7 @@ vim.keymap.set("n", "<leader>fp", function()
 	if vim.t.cwd then
 		vim.t.cwd = nil
 	else
-		cwd = vim.fn.expand("%:p:.:h")
+		local cwd = vim.fn.expand("%:p:.:h")
 		if cwd ~= "." then
 			vim.t.cwd = cwd
 		else

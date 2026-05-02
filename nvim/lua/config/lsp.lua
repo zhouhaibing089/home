@@ -30,6 +30,16 @@ for _, server in ipairs(require("mason-lspconfig").get_installed_servers()) do
 		capabilities = capabilities,
 	})
 end
+-- vim global variable is implicit
+vim.lsp.config("lua_ls", {
+	settings = {
+		Lua = {
+			diagnostics = {
+				globals = { "vim" },
+			},
+		},
+	},
+})
 
 -- disable semanticTokensProvider for terraformls as there is currently a bug
 vim.api.nvim_create_autocmd("LspAttach", {
