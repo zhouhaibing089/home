@@ -184,16 +184,6 @@ vim.api.nvim_create_user_command("Fr", function(opts)
 	global(opts, false)
 end, { desc = "global references", nargs = "*", range = true })
 
--- source graph code search
-vim.api.nvim_create_user_command("Zoekt", function(_)
-	fzf.live_grep({
-		cmd = "zoekt -index_dir .zoekt",
-		silent = true,
-		winopts = {
-			title = " Source Graph ",
-		},
-	})
-end, { desc = "source graph code search", nargs = 0 })
 vim.api.nvim_create_user_command("ZoektIndex", function(_)
 	local cwd = vim.fn.getcwd()
 	local git_check = vim.system({ "git", "rev-parse", "--is-inside-work-tree" }, {
@@ -221,7 +211,15 @@ vim.api.nvim_create_user_command("ZoektIndex", function(_)
 		end)
 	end)
 end, { desc = "update source graph index" })
-vim.keymap.set("n", "<leader>sg", ":Zoekt<CR>", { desc = "source graph code search" })
+vim.keymap.set("n", "<leader>sg", function()
+	fzf.live_grep({
+		cmd = "zoekt -index_dir .zoekt",
+		silent = true,
+		winopts = {
+			title = " Source Graph ",
+		},
+	})
+end, { desc = "source graph code search" })
 
 -- fF (current buffer's directory), ff (workspace)
 vim.keymap.set({ "n", "x" }, "<leader>ff", ":Ff<CR>", { desc = "find files" })
