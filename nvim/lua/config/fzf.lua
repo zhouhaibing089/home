@@ -297,26 +297,18 @@ vim.keymap.set({ "n" }, "<leader>gB", ":FzfLua git_blame<CR>", {
 	desc = "git commits for buffer",
 })
 
--- a customized explore page for new tab - you can search filenames or contents
-local function explore()
-	local cmd = "rg --column -n -L --no-heading --color=always -S -. " .. "-g '!.git/*' ''"
-	local f_opts = vim.tbl_extend("force", exec_opts(), {
-		winopts = {
-			title = " Explore in " .. vim.fn.expand("%:p:h:t") .. " ",
-		},
-		prompt = "> ",
-		previewer = "builtin",
-	})
-	fzf_exec(cmd, f_opts)
-end
-
 -- show file finder by default
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function()
 		local arg = vim.fn.argv(0)
 		if arg ~= "" and vim.fn.isdirectory(arg) == 1 then
 			vim.cmd.tcd(arg)
-			explore()
+			fzf.live_grep({
+				silent = true,
+				winopts = {
+					title = " Live Grep ",
+				},
+			})
 		end
 	end,
 })
@@ -325,7 +317,12 @@ vim.api.nvim_create_autocmd("TabNewEntered", {
 		local name = vim.api.nvim_buf_get_name(0)
 		if name ~= "" and vim.fn.isdirectory(name) == 1 then
 			vim.cmd.tcd(name)
-			explore()
+			fzf.live_grep({
+				silent = true,
+				winopts = {
+					title = " Live Grep ",
+				},
+			})
 		end
 	end,
 })
