@@ -90,66 +90,6 @@ vim.api.nvim_create_user_command("FF", function(opts)
 	find_files(opts, vim.fn.expand("%:p:.:h"))
 end, { desc = "find files", nargs = "*", range = true })
 
-local function grep_files(opts, dir, query)
-	query = query or ""
-	local copts = "" -- additional command options
-	if opts.range == 2 and opts.line1 == opts.line2 then
-		-- query from visual selection
-		query = get_visual_selection()
-		copts = copts .. " -F "
-	end
-	local i, j = opts.args:find(" --", 1, true)
-	local g = ""
-	if i then
-		-- anything before `--` is glob filter
-		for _, v in ipairs(opts.fargs) do
-			if v == "--" then
-				break
-			end
-			g = g .. " -g " .. vim.fn.shellescape(v)
-		end
-		-- anything after `--` is text to grep
-		local rargs = opts.args:sub(j + 1):gsub("^%s+", "")
-		if rargs ~= "" then
-			query = rargs
-		end
-	elseif #opts.fargs > 0 then
-		query = opts.args
-	end
-	local cmd = "rg --column -n -L --no-heading --color=always -S -. "
-		.. "-g '!.git/*' "
-		.. g
-		.. copts
-		.. " -- "
-		.. vim.fn.shellescape(query)
-	local title = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
-	if dir ~= "" and dir ~= "." then
-		cmd = cmd .. " " .. dir
-		title = title .. "/" .. dir
-	end
-	local f_opts = vim.tbl_extend("force", exec_opts(), {
-		winopts = {
-			title = " Grep in " .. title .. " ",
-		},
-		line_field_index = "{2}",
-		fzf_opts = vim.tbl_extend("force", fzf_opts, query == "" and {
-			["--delimiter"] = ":",
-			["--nth"] = "4..",
-			["--with-nth"] = "1,2,3,4..",
-		} or {}),
-		prompt = query == "" and "> " or (query .. " > "),
-		previewer = "builtin",
-	})
-	fzf_exec(cmd, f_opts)
-end
-
-vim.api.nvim_create_user_command("Fg", function(opts)
-	grep_files(opts, vim.t.cwd or "")
-end, { desc = "find files", nargs = "*", range = true })
-vim.api.nvim_create_user_command("FG", function(opts)
-	grep_files(opts, vim.fn.expand("%:p:.:h"))
-end, { desc = "find files", nargs = "*", range = true })
-
 -- global -{d|r} --result=grep <func>
 local function global(opts, def, query)
 	query = query or vim.fn.expand("<cword>")
@@ -224,10 +164,20 @@ end, { desc = "source graph code search" })
 -- fF (current buffer's directory), ff (workspace)
 vim.keymap.set({ "n", "x" }, "<leader>ff", ":Ff<CR>", { desc = "find files" })
 vim.keymap.set({ "n", "x" }, "<leader>fF", ":FF<CR>", { desc = "find files in buffer dir" })
-vim.keymap.set("n", "<leader>fb", ":FzfLua buffers<CR>", { desc = "find buffers" })
--- fG (current buffer's directory), fg (workspace)
-vim.keymap.set({ "n", "x" }, "<leader>fg", ":Fg<CR>", { desc = "file grep" })
-vim.keymap.set({ "n", "x" }, "<leader>fG", ":FG<CR>", { desc = "file grep in buffer dir" })
+vim.keymap.set("n", "<leader>fb", function()
+	fzf.buffers()
+end, { desc = "find buffers" })
+
+vim.keymap.set({ "n" }, "<leader>fg", function()
+	fzf.live_grep({
+		cwd = vim.t.cwd or vim.fn.getcwd(),
+	})
+end, { desc = "file grep" })
+vim.keymap.set({ "v" }, "<leader>fg", function()
+	fzf.grep_visual({
+		cwd = vim.t.cwd or vim.fn.getcwd(),
+	})
+end, { desc = "file grep" })
 -- tab-aware resume
 vim.keymap.set("n", "<leader>f.", function()
 	local f = vim.t.fzf or {}
