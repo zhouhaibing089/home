@@ -148,6 +148,16 @@ vim.keymap.set("n", "<leader>sg", function()
 		},
 	})
 end, { desc = "source graph code search" })
+vim.keymap.set("v", "<leader>sg", function()
+	fzf.grep({
+		cmd = "zoekt -index_dir .zoekt",
+		silent = true,
+		winopts = {
+			title = " Source Graph ",
+		},
+		search = utils.get_visual_selection(),
+	})
+end, { desc = "source graph code search" })
 vim.api.nvim_create_user_command("ZoektIndex", function()
 	local cwd = vim.fn.getcwd()
 	local git_check = vim.system({ "git", "rev-parse", "--is-inside-work-tree" }, {
