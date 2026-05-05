@@ -1,5 +1,6 @@
 local nc = require("neo-tree.command")
 
+-- honors vim.t.cwd (per tab current working directory)
 vim.keymap.set("n", "<leader>nt", function()
 	nc.execute({
 		action = "focus",
@@ -9,15 +10,6 @@ vim.keymap.set("n", "<leader>nt", function()
 		dir = vim.t.cwd or vim.fn.getcwd(),
 	})
 end, { desc = "Toggle neo-tree" })
-vim.keymap.set("n", "<leader>nR", function()
-	nc.execute({
-		action = "focus",
-		source = "filesystem",
-		position = "float",
-		reveal = true,
-		dir = vim.fn.getcwd(),
-	})
-end, { desc = "Reveal file under current working directory" })
 -- This makes it faster when working in mono repository - like adding files or
 -- delete files in current directory doesn't need a full travesal from project
 -- root.
