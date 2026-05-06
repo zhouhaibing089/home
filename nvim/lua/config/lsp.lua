@@ -11,8 +11,12 @@ vim.keymap.set("n", "<leader>e", fzf.diagnostics_document, { desc = "document di
 vim.keymap.set("n", "<leader>E", fzf.diagnostics_workspace, { desc = "workspace diagnostics" })
 vim.keymap.set("n", "<leader>a", fzf.lsp_code_actions, { desc = "code actions" })
 vim.keymap.set("n", "<leader>s", function()
+	local query = vim.fn.expand("<cword>")
+	if query ~= "" then
+		query = "'" .. query
+	end
 	fzf.lsp_document_symbols({
-		query = vim.fn.expand("<cword>"),
+		query = query,
 	})
 end, { desc = "document symbols" })
 vim.keymap.set("v", "<leader>s", function()
