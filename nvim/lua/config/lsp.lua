@@ -10,7 +10,11 @@ vim.keymap.set("n", "<leader>r", fzf.lsp_references, { desc = "references" })
 vim.keymap.set("n", "<leader>e", fzf.diagnostics_document, { desc = "document diagnostics" })
 vim.keymap.set("n", "<leader>E", fzf.diagnostics_workspace, { desc = "workspace diagnostics" })
 vim.keymap.set("n", "<leader>a", fzf.lsp_code_actions, { desc = "code actions" })
-vim.keymap.set("n", "<leader>s", fzf.lsp_document_symbols, { desc = "document symbols" })
+vim.keymap.set("n", "<leader>s", function()
+	fzf.lsp_document_symbols({
+		query = vim.fn.expand("<cword>"),
+	})
+end, { desc = "document symbols" })
 vim.keymap.set("v", "<leader>s", function()
 	fzf.lsp_document_symbols({
 		query = utils.get_visual_selection(),
