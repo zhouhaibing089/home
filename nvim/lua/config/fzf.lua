@@ -85,6 +85,12 @@ vim.keymap.set({ "n" }, "<leader>fg", function()
 		cwd = vim.t.cwd or vim.fn.getcwd(),
 	})
 end, { desc = "file grep" })
+vim.keymap.set({ "n" }, "<leader>/", function()
+	fzf.grep({
+		cwd = vim.t.cwd or vim.fn.getcwd(),
+		search = vim.fn.expand("<cword>"),
+	})
+end, { desc = "file grep" })
 vim.keymap.set({ "v" }, "<leader>fg", function()
 	fzf.grep_visual({
 		cwd = vim.t.cwd or vim.fn.getcwd(),
