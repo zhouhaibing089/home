@@ -22,6 +22,9 @@ return {
 
 			lualine_x = {
 				function()
+					if vim.w.cwd and vim.w.cwd == vim.t.cwd then
+						return "[w][t] " .. vim.w.cwd
+					end
 					if vim.w.cwd then
 						return "[w] " .. vim.w.cwd
 					end
@@ -56,6 +59,9 @@ return {
 			},
 			lualine_x = {
 				function()
+					if vim.w.cwd and vim.w.cwd == vim.t.cwd then
+						return "[w][t] " .. vim.w.cwd
+					end
 					if vim.w.cwd then
 						return "[w] " .. vim.w.cwd
 					end

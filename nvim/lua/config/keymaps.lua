@@ -65,13 +65,16 @@ vim.keymap.set("n", "<leader>=", "<C-w>=", { desc = "balance width or height" })
 
 -- set tab or window local cwd
 local function tab_cwd()
-	if vim.t.cwd then
+	if vim.w.cwd and vim.w.cwd ~= vim.t.cwd then
+		-- reset tab local cwd to window local cwd
+		vim.t.cwd = vim.w.cwd
+	elseif vim.t.cwd then
+		-- clear tab local cwd and window local cwd
 		vim.t.cwd = nil
 		-- clearing tab local cwd implies clearing local window cwd
-		if vim.w.cwd then
-			vim.w.cwd = nil
-		end
+		vim.w.cwd = nil
 	else
+		-- setting tab local cwd and window local cwd
 		local cwd = vim.fn.expand("%:p:.:h")
 		if cwd == "." then
 			cwd = nil
@@ -90,11 +93,10 @@ vim.keymap.set("n", "<leader>wp", function()
 		vim.w.cwd = nil
 	else
 		local cwd = vim.fn.expand("%:p:.:h")
-		if cwd ~= "." then
-			vim.w.cwd = cwd
-		else
-			vim.w.cwd = nil
+		if cwd == "." then
+			cwd = nil
 		end
+		vim.w.cwd = cwd
 	end
 	vim.cmd("redrawstatus")
 end, { desc = "set tab local cwd" })
