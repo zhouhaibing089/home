@@ -1,7 +1,7 @@
 local Terminal = require("toggleterm.terminal").Terminal
 local terms = {}
 
-function toggle(offset, direction, dir)
+local function toggle(offset, direction, dir)
 	local count = vim.fn.tabpagenr() * 10 + offset
 	if not terms[count] then
 		terms[count] = Terminal:new({

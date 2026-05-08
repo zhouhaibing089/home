@@ -22,7 +22,13 @@ return {
 
 			lualine_x = {
 				function()
-					return vim.w.cwd or vim.t.cwd or ""
+					if vim.w.cwd then
+						return "[w] " .. vim.w.cwd
+					end
+					if vim.t.cwd then
+						return "[t] " .. vim.t.cwd
+					end
+					return ""
 				end,
 			},
 			lualine_y = { "filetype" },
@@ -50,7 +56,13 @@ return {
 			},
 			lualine_x = {
 				function()
-					return vim.w.cwd or vim.t.cwd or ""
+					if vim.w.cwd then
+						return "[w] " .. vim.w.cwd
+					end
+					if vim.t.cwd then
+						return "[t] " .. vim.t.cwd
+					end
+					return ""
 				end,
 			},
 			lualine_y = { "filetype" },

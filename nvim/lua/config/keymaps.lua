@@ -64,7 +64,7 @@ vim.keymap.set("n", "<leader>9", "9gt", { desc = "go to tab9" })
 vim.keymap.set("n", "<leader>=", "<C-w>=", { desc = "balance width or height" })
 
 -- set tab or window local cwd
-vim.keymap.set("n", "<leader>tp", function()
+local function tab_cwd()
 	if vim.t.cwd then
 		vim.t.cwd = nil
 	else
@@ -76,7 +76,10 @@ vim.keymap.set("n", "<leader>tp", function()
 		end
 	end
 	vim.cmd("redrawstatus")
-end, { desc = "set tab local cwd" })
+end
+vim.keymap.set("n", "<leader>tp", tab_cwd, { desc = "set tab local cwd" })
+-- temporary while I update my muscle memory
+vim.keymap.set("n", "<leader>fp", tab_cwd, { desc = "set tab local cwd" })
 vim.keymap.set("n", "<leader>wp", function()
 	if vim.w.cwd then
 		vim.w.cwd = nil
