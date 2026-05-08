@@ -6,8 +6,9 @@ return {
 			lualine_b = { "branch", "diff", "diagnostics" },
 			lualine_c = {
 				{
-					"filename",
-					path = 1,
+					function()
+						return vim.fs.relpath(vim.t.cwd or vim.fn.getcwd(), vim.api.nvim_buf_get_name(0))
+					end,
 				},
 			},
 
@@ -27,10 +28,9 @@ return {
 			lualine_a = { "mode" },
 			lualine_b = { "branch", "diff", "diagnostics" },
 			lualine_c = {
-				{
-					"filename",
-					path = 1,
-				},
+				function()
+					return vim.fs.relpath(vim.t.cwd or vim.fn.getcwd(), vim.api.nvim_buf_get_name(0))
+				end,
 			},
 			lualine_x = {
 				function()
