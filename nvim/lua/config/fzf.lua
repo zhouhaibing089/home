@@ -9,21 +9,6 @@ local function files_prompt(dir)
 	return vim.fn.fnamemodify(vim.fn.getcwd(), ":t") .. " > "
 end
 
--- pin to current buffer's directory
-vim.keymap.set("n", "<leader>fp", function()
-	if vim.t.cwd then
-		vim.t.cwd = nil
-	else
-		local cwd = vim.fn.expand("%:p:.:h")
-		if cwd ~= "." then
-			vim.t.cwd = cwd
-		else
-			vim.t.cwd = nil
-		end
-	end
-	vim.cmd("redrawstatus")
-end, { desc = "pin directory for next fuzzy find" })
-
 -- resume
 vim.keymap.set("n", "<leader>f.", function()
 	fzf.resume()
@@ -60,18 +45,18 @@ vim.api.nvim_create_autocmd("TabNewEntered", {
 -- find files
 vim.keymap.set({ "n" }, "<leader>ff", function()
 	fzf.files({
-		cwd = vim.t.cwd or vim.fn.getcwd(),
+		cwd = vim.w.cwd or vim.t.cwd or vim.fn.getcwd(),
 		cwd_prompt = false,
 		cwd_header = false,
-		prompt = files_prompt(vim.t.cwd),
+		prompt = files_prompt(vim.w.cwd or vim.t.cwd),
 	})
 end, { desc = "find files" })
 vim.keymap.set({ "v" }, "<leader>ff", function()
 	fzf.files({
-		cwd = vim.t.cwd or vim.fn.getcwd(),
+		cwd = vim.w.cwd or vim.t.cwd or vim.fn.getcwd(),
 		cwd_prompt = false,
 		cwd_header = false,
-		prompt = files_prompt(vim.t.cwd),
+		prompt = files_prompt(vim.w.cwd or vim.t.cwd),
 		query = utils.get_visual_selection(),
 	})
 end, { desc = "find files" })
@@ -82,18 +67,18 @@ end, { desc = "find buffers" })
 -- file grep
 vim.keymap.set({ "n" }, "<leader>fg", function()
 	fzf.live_grep({
-		cwd = vim.t.cwd or vim.fn.getcwd(),
+		cwd = vim.w.cwd or vim.t.cwd or vim.fn.getcwd(),
 	})
 end, { desc = "file grep" })
 vim.keymap.set({ "n" }, "<leader>/", function()
 	fzf.grep({
-		cwd = vim.t.cwd or vim.fn.getcwd(),
+		cwd = vim.w.cwd or vim.t.cwd or vim.fn.getcwd(),
 		search = vim.fn.expand("<cword>"),
 	})
 end, { desc = "file grep" })
 vim.keymap.set({ "v" }, "<leader>fg", function()
 	fzf.grep_visual({
-		cwd = vim.t.cwd or vim.fn.getcwd(),
+		cwd = vim.w.cwd or vim.t.cwd or vim.fn.getcwd(),
 	})
 end, { desc = "file grep" })
 

@@ -14,10 +14,10 @@ function toggle(offset, direction, dir)
 end
 
 vim.keymap.set("n", "<leader>tf", function()
-	toggle(1, "float", vim.t.cwd or vim.fn.getcwd())
+	toggle(1, "float", vim.w.cwd or vim.t.cwd or vim.fn.getcwd())
 end, { desc = "toggle floating terminal" })
 vim.keymap.set("n", "<leader>tb", function()
-	toggle(2, "horizontal", vim.t.cwd or vim.fn.getcwd())
+	toggle(2, "horizontal", vim.w.cwd or vim.t.cwd or vim.fn.getcwd())
 end, { desc = "toggle bottom terminal" })
 vim.keymap.set("n", "<leader>tF", function()
 	toggle(1, "float", vim.fn.expand("%:p:h"))

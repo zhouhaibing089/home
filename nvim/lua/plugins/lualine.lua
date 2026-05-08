@@ -7,14 +7,22 @@ return {
 			lualine_c = {
 				{
 					function()
-						return vim.fs.relpath(vim.t.cwd or vim.fn.getcwd(), vim.api.nvim_buf_get_name(0))
+						local filename = vim.fn.expand("%")
+						local cwd = vim.w.cwd or vim.t.cwd or ""
+						if cwd == "" then
+							return filename
+						end
+						if filename:sub(1, #cwd) == cwd then
+							return filename:sub(#cwd + 2)
+						end
+						return filename
 					end,
 				},
 			},
 
 			lualine_x = {
 				function()
-					return vim.t.cwd or ""
+					return vim.w.cwd or vim.t.cwd or ""
 				end,
 			},
 			lualine_y = { "filetype" },
@@ -29,13 +37,20 @@ return {
 			lualine_b = { "branch", "diff", "diagnostics" },
 			lualine_c = {
 				function()
-					return vim.fs.relpath(vim.t.cwd or vim.fn.getcwd(), vim.api.nvim_buf_get_name(0))
+					local filename = vim.fn.expand("%")
+					local cwd = vim.w.cwd or vim.t.cwd or ""
+					if cwd == "" then
+						return filename
+					end
+					if filename:sub(1, #cwd) == cwd then
+						return filename:sub(#cwd + 2)
+					end
+					return filename
 				end,
 			},
 			lualine_x = {
 				function()
-					vim.t = vim.t or {}
-					return vim.t.cwd or ""
+					return vim.w.cwd or vim.t.cwd or ""
 				end,
 			},
 			lualine_y = { "filetype" },

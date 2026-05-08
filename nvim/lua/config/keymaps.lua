@@ -62,3 +62,31 @@ vim.keymap.set("n", "<leader>9", "9gt", { desc = "go to tab9" })
 
 -- splits
 vim.keymap.set("n", "<leader>=", "<C-w>=", { desc = "balance width or height" })
+
+-- set tab or window local cwd
+vim.keymap.set("n", "<leader>tp", function()
+	if vim.t.cwd then
+		vim.t.cwd = nil
+	else
+		local cwd = vim.fn.expand("%:p:.:h")
+		if cwd ~= "." then
+			vim.t.cwd = cwd
+		else
+			vim.t.cwd = nil
+		end
+	end
+	vim.cmd("redrawstatus")
+end, { desc = "set tab local cwd" })
+vim.keymap.set("n", "<leader>wp", function()
+	if vim.w.cwd then
+		vim.w.cwd = nil
+	else
+		local cwd = vim.fn.expand("%:p:.:h")
+		if cwd ~= "." then
+			vim.w.cwd = cwd
+		else
+			vim.w.cwd = nil
+		end
+	end
+	vim.cmd("redrawstatus")
+end, { desc = "set tab local cwd" })
