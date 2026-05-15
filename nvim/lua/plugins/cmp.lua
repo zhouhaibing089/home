@@ -11,9 +11,9 @@ return {
 			preset = "none",
 			-- mnemonic: list
 			["<C-l>"] = {
-				"show",
-				"show_documentation",
-				"hide_documentation",
+				function(cmp)
+					cmp.show({ providers = { "lsp" } })
+				end,
 			},
 			["<C-j>"] = {
 				"select_next",
