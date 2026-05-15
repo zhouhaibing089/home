@@ -9,6 +9,12 @@ return {
 	opts = {
 		keymap = {
 			preset = "none",
+			-- mnemonic: list
+			["<C-l>"] = {
+				"show",
+				"show_documentation",
+				"hide_documentation",
+			},
 			["<C-j>"] = {
 				"select_next",
 				"snippet_forward",
@@ -62,12 +68,8 @@ return {
 				["<C-j>"] = { "select_next", "fallback" },
 			},
 		},
-		appearance = {
-			nerd_font_variant = "mono",
-		},
 		completion = {
 			documentation = { auto_show = true, auto_show_delay_ms = 200 },
-			menu = { auto_show = true, auto_show_delay_ms = 200 },
 			list = {
 				selection = {
 					-- do not insert text on highlight
@@ -77,10 +79,6 @@ return {
 				},
 			},
 		},
-		sources = {
-			default = { "lsp", "path", "snippets", "buffer" },
-		},
-		fuzzy = { implementation = "prefer_rust_with_warning" },
 	},
 	opts_extend = { "sources.default" },
 }
