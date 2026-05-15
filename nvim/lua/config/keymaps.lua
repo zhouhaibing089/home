@@ -36,8 +36,8 @@ vim.keymap.set("n", "N", "Nzz", { desc = "prev search result and center" })
 -- buffer view
 vim.keymap.set({ "n" }, "<C-d>", "<C-d>zz", { desc = "half page down" })
 vim.keymap.set({ "n" }, "<C-u>", "<C-u>zz", { desc = "half page up" })
-vim.keymap.set({ "n" }, "<leader>j", "5j", { desc = "down 5 lines" })
-vim.keymap.set({ "n" }, "<leader>k", "5k", { desc = "up 5 lines" })
+vim.keymap.set({ "n", "v" }, "<leader>j", "5j", { desc = "down 5 lines" })
+vim.keymap.set({ "n", "v" }, "<leader>k", "5k", { desc = "up 5 lines" })
 vim.keymap.set("n", "<leader>i", "<C-i>", { desc = "go forward (in)" })
 vim.keymap.set("n", "<leader>o", "<C-o>", { desc = "go backward (out)" })
 
