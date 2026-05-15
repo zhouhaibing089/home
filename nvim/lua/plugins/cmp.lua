@@ -51,6 +51,11 @@ return {
 				"scroll_documentation_down",
 				"fallback",
 			},
+			["<C-Space>"] = { 
+				"show",
+				"show_documentation",
+				"hide_documentation",
+			},
 		},
 		cmdline = {
 			enabled = true,
