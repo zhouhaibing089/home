@@ -51,11 +51,6 @@ return {
 				"scroll_documentation_down",
 				"fallback",
 			},
-			["<C-Space>"] = { 
-				"show",
-				"show_documentation",
-				"hide_documentation",
-			},
 		},
 		cmdline = {
 			enabled = true,
@@ -72,6 +67,7 @@ return {
 		},
 		completion = {
 			documentation = { auto_show = true, auto_show_delay_ms = 200 },
+			menu = { auto_show = true, auto_show_delay_ms = 200 },
 			list = {
 				selection = {
 					-- do not insert text on highlight
