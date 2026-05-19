@@ -51,6 +51,14 @@ vim.keymap.set({ "n" }, "<leader>ff", function()
 		prompt = files_prompt(vim.w.cwd or vim.t.cwd),
 	})
 end, { desc = "find files" })
+vim.keymap.set({ "n" }, "<leader>fF", function()
+	fzf.files({
+		cwd = vim.fn.getcwd(),
+		cwd_prompt = false,
+		cwd_header = false,
+		prompt = files_prompt(),
+	})
+end, { desc = "find files (global)" })
 vim.keymap.set({ "v" }, "<leader>ff", function()
 	fzf.files({
 		cwd = vim.w.cwd or vim.t.cwd or vim.fn.getcwd(),
@@ -60,6 +68,15 @@ vim.keymap.set({ "v" }, "<leader>ff", function()
 		query = utils.get_visual_selection(),
 	})
 end, { desc = "find files" })
+vim.keymap.set({ "v" }, "<leader>fF", function()
+	fzf.files({
+		cwd = vim.fn.getcwd(),
+		cwd_prompt = false,
+		cwd_header = false,
+		prompt = files_prompt(),
+		query = utils.get_visual_selection(),
+	})
+end, { desc = "find files (global)" })
 vim.keymap.set("n", "<leader>fb", function()
 	fzf.buffers()
 end, { desc = "find buffers" })
@@ -70,6 +87,11 @@ vim.keymap.set({ "n" }, "<leader>fg", function()
 		cwd = vim.w.cwd or vim.t.cwd or vim.fn.getcwd(),
 	})
 end, { desc = "file grep" })
+vim.keymap.set({ "n" }, "<leader>fG", function()
+	fzf.live_grep({
+		cwd = vim.fn.getcwd(),
+	})
+end, { desc = "file grep (global)" })
 vim.keymap.set({ "n" }, "<leader>/", function()
 	fzf.grep({
 		cwd = vim.w.cwd or vim.t.cwd or vim.fn.getcwd(),
@@ -81,6 +103,11 @@ vim.keymap.set({ "v" }, "<leader>fg", function()
 		cwd = vim.w.cwd or vim.t.cwd or vim.fn.getcwd(),
 	})
 end, { desc = "file grep" })
+vim.keymap.set({ "v" }, "<leader>fG", function()
+	fzf.grep_visual({
+		cwd = vim.fn.getcwd(),
+	})
+end, { desc = "file grep (global)" })
 
 -- git blame
 vim.keymap.set({ "n" }, "<leader>gb", function()
@@ -149,30 +176,3 @@ vim.keymap.set("v", "<leader>sg", function()
 		search = utils.get_visual_selection(),
 	})
 end, { desc = "source graph code search" })
-vim.api.nvim_create_user_command("ZoektIndex", function()
-	local cwd = vim.fn.getcwd()
-	local git_check = vim.system({ "git", "rev-parse", "--is-inside-work-tree" }, {
-		cwd = cwd,
-		text = true,
-	}):wait()
-	local cmd = git_check.code == 0 and "zoekt-git-index" or "zoekt-index"
-
-	vim.notify("Building zoekt index with " .. cmd, vim.log.levels.INFO)
-	vim.system({ cmd, "-index", ".zoekt", "." }, {
-		cwd = cwd,
-		text = true,
-	}, function(result)
-		vim.schedule(function()
-			if result.code == 0 then
-				vim.notify("Zoekt index updated in " .. cwd, vim.log.levels.INFO)
-				return
-			end
-
-			local err = vim.trim(result.stderr or "")
-			if err == "" then
-				err = "exit code " .. result.code
-			end
-			vim.notify("Zoekt indexing failed: " .. err, vim.log.levels.ERROR)
-		end)
-	end)
-end, { desc = "update source graph index" })
