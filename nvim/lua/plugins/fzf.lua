@@ -1,7 +1,3 @@
--- return {
---	"junegunn/fzf.vim",
---	dependencies = { "junegunn/fzf", build = "./install --all" },
--- }
 return {
 	"ibhagwan/fzf-lua",
 	-- optional for icon support
@@ -21,6 +17,9 @@ return {
 				["ctrl-j"] = "down",
 				["ctrl-k"] = "up",
 			},
+		},
+		fzf_opts = {
+			["--history"] = os.getenv("HOME") .. "/.fzf_history",
 		},
 	},
 	---@diagnostic enable: missing-fields
