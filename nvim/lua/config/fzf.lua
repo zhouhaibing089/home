@@ -60,21 +60,23 @@ vim.keymap.set({ "n" }, "<leader>fF", function()
 	})
 end, { desc = "find files (global)" })
 vim.keymap.set({ "v" }, "<leader>ff", function()
+	local query = vim.fn.simplify((utils.get_visual_selection()))
 	fzf.files({
 		cwd = vim.w.cwd or vim.t.cwd or vim.fn.getcwd(),
 		cwd_prompt = false,
 		cwd_header = false,
 		prompt = files_prompt(vim.w.cwd or vim.t.cwd),
-		query = utils.get_visual_selection(),
+		query = query:gsub("^([%.%.%/|%.%/]+)", ""),
 	})
 end, { desc = "find files" })
 vim.keymap.set({ "v" }, "<leader>fF", function()
+	local query = vim.fn.simplify((utils.get_visual_selection()))
 	fzf.files({
 		cwd = vim.fn.getcwd(),
 		cwd_prompt = false,
 		cwd_header = false,
 		prompt = files_prompt(),
-		query = utils.get_visual_selection(),
+		query = query:gsub("^([%.%.%/|%.%/]+)", ""),
 	})
 end, { desc = "find files (global)" })
 vim.keymap.set("n", "<leader>fb", function()
