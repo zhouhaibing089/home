@@ -8,6 +8,8 @@ vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Window right" })
 vim.keymap.set({ "x", "n" }, "<leader>y", '"+y', { desc = "copy to system clipboard" })
 vim.keymap.set("n", "<leader>p", '"+p', { desc = "paste after from system clipboard" })
 vim.keymap.set("n", "<leader>P", '"+P', { desc = "paste before from system clipboard" })
+
+-- copy buffer path
 vim.keymap.set({ "n", "x" }, "<leader>cp", ':let @+ = expand("%:p")<CR>', { desc = "copy full path of current buffer" })
 vim.keymap.set(
 	{ "n", "x" },
@@ -38,8 +40,6 @@ vim.keymap.set({ "n" }, "<C-d>", "<C-d>zz", { desc = "half page down" })
 vim.keymap.set({ "n" }, "<C-u>", "<C-u>zz", { desc = "half page up" })
 vim.keymap.set({ "n", "v" }, "<leader>j", "5j", { desc = "down 5 lines" })
 vim.keymap.set({ "n", "v" }, "<leader>k", "5k", { desc = "up 5 lines" })
-vim.keymap.set("n", "<leader>i", "<C-i>", { desc = "go forward (in)" })
-vim.keymap.set("n", "<leader>o", "<C-o>", { desc = "go backward (out)" })
 
 -- clear highlights
 vim.keymap.set("n", "<Esc>", function()
