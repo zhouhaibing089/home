@@ -178,3 +178,11 @@ vim.keymap.set("v", "<leader>sg", function()
 		search = utils.get_visual_selection(),
 	})
 end, { desc = "source graph code search" })
+
+-- git diff or status
+vim.keymap.set("n", "<leader>gs", function()
+	fzf.git_status()
+end, { desc = "git diff" })
+vim.keymap.set("n", "<leader>gd", function()
+	fzf.git_diff()
+end, { desc = "git diff" })

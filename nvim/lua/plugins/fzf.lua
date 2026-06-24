@@ -10,10 +10,16 @@ return {
 	opts = {
 		no_hide = true,
 		winopts = {
-			preview = { layout = "vertical", size = "down:50%" },
+			preview = { layout = "vertical", vertical = "down:75%" },
 		},
 		keymap = {
+			builtin = {
+				true,
+				["<C-d>"] = "preview-page-down",
+				["<C-u>"] = "preview-page-up",
+			},
 			fzf = {
+				true,
 				["ctrl-j"] = "down",
 				["ctrl-k"] = "up",
 			},
