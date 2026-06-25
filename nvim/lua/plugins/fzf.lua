@@ -10,7 +10,7 @@ return {
 	opts = {
 		no_hide = true,
 		winopts = {
-			preview = { layout = "vertical", vertical = "down:75%" },
+			preview = { layout = "vertical", vertical = "down:50%" },
 		},
 		keymap = {
 			builtin = {
@@ -26,6 +26,12 @@ return {
 		},
 		fzf_opts = {
 			["--history"] = os.getenv("HOME") .. "/.fzf_history",
+		},
+		lsp = {
+			symbols = {
+				child_prefix = true,
+				parent_postfix = ".",
+			},
 		},
 	},
 	---@diagnostic enable: missing-fields

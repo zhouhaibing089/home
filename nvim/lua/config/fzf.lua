@@ -181,8 +181,16 @@ end, { desc = "source graph code search" })
 
 -- git diff or status
 vim.keymap.set("n", "<leader>gs", function()
-	fzf.git_status()
+	fzf.git_status({
+		winopts = {
+			preview = { layout = "vertical", vertical = "down:75%" },
+		},
+	})
 end, { desc = "git diff" })
 vim.keymap.set("n", "<leader>gd", function()
-	fzf.git_diff()
+	fzf.git_diff({
+		winopts = {
+			preview = { layout = "vertical", vertical = "down:75%" },
+		},
+	})
 end, { desc = "git diff" })
