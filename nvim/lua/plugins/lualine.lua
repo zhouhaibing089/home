@@ -10,7 +10,7 @@ return {
 			lualine_c = {
 				{
 					function()
-						local filename = vim.fn.expand("%")
+						local filename = vim.fn.expand("%:.")
 						local cwd = vim.w.cwd or vim.t.cwd or ""
 						if cwd == "" then
 							return filename
