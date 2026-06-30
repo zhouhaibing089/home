@@ -31,10 +31,6 @@ return {
 			},
 			lualine_z = { "filetype" },
 		},
-		extensions = {
-			"neo-tree",
-			"toggleterm",
-		},
 	},
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 }
