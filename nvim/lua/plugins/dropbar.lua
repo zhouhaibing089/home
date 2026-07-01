@@ -8,10 +8,13 @@ return {
 		},
 		config = function()
 			local dropbar = require("dropbar")
+			local sources = require("dropbar.sources")
 			local bar_enable = require("dropbar.configs").opts.bar.enable
+
 			dropbar.setup({
 				bar = {
 					enable = function(buf, win, info)
+						-- I still want to have winbar for floating toggleterm
 						if vim.bo[buf].filetype == "toggleterm" then
 							return true
 						end
@@ -19,8 +22,18 @@ return {
 					end,
 					sources = function(_, _)
 						return {
-							require("dropbar.sources.path"),
-							require("dropbar.sources.lsp"),
+							-- make path sources un-clickable:
+							{
+								name = "path",
+								get_symbols = function(buf, win, cursor)
+									local symbols = sources.path.get_symbols(buf, win, cursor)
+									for _, symbol in ipairs(symbols) do
+										symbol.on_click = false
+									end
+									return symbols
+								end,
+							},
+							sources.lsp,
 						}
 					end,
 				},
