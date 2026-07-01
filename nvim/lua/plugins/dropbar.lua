@@ -8,7 +8,22 @@ return {
 		},
 		config = function()
 			local dropbar = require("dropbar")
+			local bar_enable = require("dropbar.configs").opts.bar.enable
 			dropbar.setup({
+				bar = {
+					enable = function(buf, win, info)
+						if vim.bo[buf].filetype == "toggleterm" then
+							return true
+						end
+						return bar_enable(buf, win, info)
+					end,
+					sources = function(_, _)
+						return {
+							require("dropbar.sources.path"),
+							require("dropbar.sources.lsp"),
+						}
+					end,
+				},
 				sources = {
 					path = {
 						relative_to = function(_, _)
