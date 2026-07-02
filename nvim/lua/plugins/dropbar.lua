@@ -43,6 +43,11 @@ return {
 								return vim.fn.getcwd()
 							end
 						end,
+						modified = function(sym)
+							sym.name = sym.name .. " ●"
+							sym.name_hl = "DiagnosticWarn"
+							return sym
+						end,
 					},
 				},
 			})
