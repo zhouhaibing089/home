@@ -12,6 +12,10 @@ return {
 						if vim.bo[buf].filetype == "toggleterm" then
 							return true
 						end
+						-- I want this to be enabled for any file buffers
+						if vim.api.nvim_buf_get_name(buf) ~= "" and vim.bo[buf].buftype == "" then
+							return true
+						end
 						return bar_enable(buf, win, info)
 					end,
 					sources = function(_, _)
