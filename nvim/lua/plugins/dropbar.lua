@@ -2,11 +2,10 @@ return {
 	{
 		"Bekaboo/dropbar.nvim",
 		config = function()
-			local dropbar = require("dropbar")
 			local sources = require("dropbar.sources")
 			local bar_enable = require("dropbar.configs").opts.bar.enable
 
-			dropbar.setup({
+			require("dropbar").setup({
 				bar = {
 					enable = function(buf, win, info)
 						-- I still want to have winbar for floating toggleterm
@@ -18,16 +17,17 @@ return {
 					sources = function(_, _)
 						return {
 							-- make path sources un-clickable:
-							{
-								name = "path",
-								get_symbols = function(buf, win, cursor)
-									local symbols = sources.path.get_symbols(buf, win, cursor)
-									for _, symbol in ipairs(symbols) do
-										symbol.on_click = false
-									end
-									return symbols
-								end,
-							},
+							-- {
+							-- 	name = "path",
+							-- 	get_symbols = function(buf, win, cursor)
+							-- 		local symbols = sources.path.get_symbols(buf, win, cursor)
+							-- 		for _, symbol in ipairs(symbols) do
+							-- 			symbol.on_click = false
+							-- 		end
+							-- 		return symbols
+							-- 	end,
+							-- },
+							sources.path,
 							sources.lsp,
 						}
 					end,
@@ -53,8 +53,6 @@ return {
 			})
 			local dropbar_api = require("dropbar.api")
 			vim.keymap.set("n", "<Leader>;", dropbar_api.pick, { desc = "Pick symbols in winbar" })
-			vim.keymap.set("n", "[;", dropbar_api.goto_context_start, { desc = "Go to start of current context" })
-			vim.keymap.set("n", "];", dropbar_api.select_next_context, { desc = "Select next context" })
 		end,
 	},
 }
