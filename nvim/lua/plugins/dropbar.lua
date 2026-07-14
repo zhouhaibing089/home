@@ -4,6 +4,7 @@ return {
 		config = function()
 			local sources = require("dropbar.sources")
 			local bar_enable = require("dropbar.configs").opts.bar.enable
+			local path_relative_to = require("dropbar.configs").opts.sources.path.relative_to
 
 			require("dropbar").setup({
 				bar = {
@@ -38,14 +39,23 @@ return {
 				},
 				sources = {
 					path = {
-						relative_to = function(_, _)
-							if vim.w.cwd then
-								return vim.fs.abspath(vim.w.cwd)
-							elseif vim.t.cwd then
-								return vim.fs.abspath(vim.t.cwd)
-							else
-								return vim.fn.getcwd()
+						relative_to = function(buf, win)
+							-- use default when not file or directory
+							if vim.bo[buf].buftype ~= "" then
+								return path_relative_to(buf, win)
 							end
+							local name = vim.api.nvim_buf_get_name(buf)
+							-- iterate through window local and tab local cwd
+							for _, cwd in ipairs({ vim.w.cwd, vim.t.cwd }) do
+								if cwd then
+									-- if name starts with cwd
+									local root = vim.fs.abspath(cwd)
+									if name:sub(1, #root) == root then
+										return root
+									end
+								end
+							end
+							return vim.fn.getcwd()
 						end,
 						modified = function(sym)
 							sym.name = sym.name .. " ●"
