@@ -1,196 +1,73 @@
 local fzf = require("fzf-lua")
 local utils = require("fzf-lua.utils")
+local conform = require("conform")
 
--- files_prompt returns the prompt for cwd
-local function files_prompt(dir)
-	if dir then
-		return dir .. " > "
+-- These are the most significant keybindings, so making it short
+vim.keymap.set("n", "<leader>d", fzf.lsp_definitions, { desc = "definitions" })
+vim.keymap.set("n", "<leader>D", fzf.lsp_declarations, { desc = "declarations" })
+vim.keymap.set("n", "<leader>i", fzf.lsp_implementations, { desc = "implementations" })
+vim.keymap.set("n", "<leader>r", fzf.lsp_references, { desc = "references" })
+vim.keymap.set("n", "<leader>e", fzf.diagnostics_document, { desc = "document diagnostics" })
+vim.keymap.set("n", "<leader>E", fzf.diagnostics_workspace, { desc = "workspace diagnostics" })
+vim.keymap.set("n", "<leader>a", fzf.lsp_code_actions, { desc = "code actions" })
+vim.keymap.set("n", "<leader>s", function()
+	fzf.lsp_document_symbols()
+end, { desc = "document symbols" })
+vim.keymap.set("n", "<leader>S", function()
+	local query = vim.fn.expand("<cword>")
+	if query ~= "" then
+		query = "'" .. query
 	end
-	return vim.fn.fnamemodify(vim.fn.getcwd(), ":t") .. " > "
+	fzf.lsp_document_symbols({
+		query = query,
+	})
+end, { desc = "document symbols <cword>" })
+vim.keymap.set("v", "<leader>s", function()
+	fzf.lsp_document_symbols({
+		query = utils.get_visual_selection(),
+	})
+end, { desc = "document symbols" })
+vim.keymap.set("n", "<leader>c", fzf.lsp_incoming_calls, { desc = "incoming calls" })
+vim.keymap.set("n", "<leader>C", fzf.lsp_outgoing_calls, { desc = "outgoing calls" })
+vim.keymap.set("n", "<leader>t", fzf.lsp_typedefs, { desc = "type definitions" })
+vim.keymap.set("n", "<leader>h", function()
+	vim.lsp.buf.hover({ border = "rounded" })
+end, { desc = "lsp help" })
+vim.keymap.set("n", "<leader>H", function()
+	vim.lsp.buf.signature_help({ border = "rounded" })
+end, { desc = "lsp signatures help" })
+vim.keymap.set("n", "<leader>n", vim.lsp.buf.rename, { desc = "rename" })
+vim.keymap.set("n", "<leader>f", function()
+	conform.format({ lsp_fallback = true })
+end, { desc = "lsp format" })
+
+-- set capabilities for all installed lsp servers
+local capabilities = require("blink.cmp").get_lsp_capabilities({
+	-- workspace/didChangeWatchedFiles can cause poor performance
+	workspace = nil,
+})
+for _, server in ipairs(require("mason-lspconfig").get_installed_servers()) do
+	vim.lsp.config(server, {
+		capabilities = capabilities,
+	})
 end
+-- vim global variable is implicit
+vim.lsp.config("lua_ls", {
+	settings = {
+		Lua = {
+			diagnostics = {
+				globals = { "vim" },
+			},
+		},
+	},
+})
 
--- resume
-vim.keymap.set("n", "<leader>f.", function()
-	fzf.resume()
-end, { desc = "fzf resume" })
-
--- show file finder by default
-vim.api.nvim_create_autocmd("VimEnter", {
-	callback = function()
-		local arg = vim.fn.argv(0)
-		if arg ~= "" and vim.fn.isdirectory(arg) == 1 then
-			vim.cmd.tcd(arg)
-			fzf.files({
-				cwd_prompt = false,
-				cwd_header = false,
-				prompt = files_prompt(),
-			})
+-- disable semanticTokensProvider for terraformls as there is currently a bug
+vim.api.nvim_create_autocmd("LspAttach", {
+	callback = function(args)
+		local client = vim.lsp.get_client_by_id(args.data.client_id)
+		if client and client.name == "terraformls" then
+			client.server_capabilities.semanticTokensProvider = nil
 		end
 	end,
 })
-vim.api.nvim_create_autocmd("TabNewEntered", {
-	callback = function()
-		local name = vim.api.nvim_buf_get_name(0)
-		if name ~= "" and vim.fn.isdirectory(name) == 1 then
-			vim.cmd.tcd(name)
-			fzf.files({
-				cwd_prompt = false,
-				cwd_header = false,
-				prompt = files_prompt(),
-			})
-		end
-	end,
-})
-
--- find files
-vim.keymap.set({ "n" }, "<leader>ff", function()
-	fzf.files({
-		cwd = vim.w.cwd or vim.t.cwd or vim.fn.getcwd(),
-		cwd_prompt = false,
-		cwd_header = false,
-		prompt = files_prompt(vim.w.cwd or vim.t.cwd),
-	})
-end, { desc = "find files" })
-vim.keymap.set({ "n" }, "<leader>fF", function()
-	fzf.files({
-		cwd = vim.fn.getcwd(),
-		cwd_prompt = false,
-		cwd_header = false,
-		prompt = files_prompt(),
-	})
-end, { desc = "find files (global)" })
-vim.keymap.set({ "v" }, "<leader>ff", function()
-	local query = vim.fn.simplify((utils.get_visual_selection()))
-	fzf.files({
-		cwd = vim.w.cwd or vim.t.cwd or vim.fn.getcwd(),
-		cwd_prompt = false,
-		cwd_header = false,
-		prompt = files_prompt(vim.w.cwd or vim.t.cwd),
-		query = query:gsub("^([%.%.%/|%.%/]+)", ""),
-	})
-end, { desc = "find files" })
-vim.keymap.set({ "v" }, "<leader>fF", function()
-	local query = vim.fn.simplify((utils.get_visual_selection()))
-	fzf.files({
-		cwd = vim.fn.getcwd(),
-		cwd_prompt = false,
-		cwd_header = false,
-		prompt = files_prompt(),
-		query = query:gsub("^([%.%.%/|%.%/]+)", ""),
-	})
-end, { desc = "find files (global)" })
-vim.keymap.set("n", "<leader>fb", function()
-	fzf.buffers()
-end, { desc = "find buffers" })
-
--- file grep
-vim.keymap.set({ "n" }, "<leader>fg", function()
-	fzf.live_grep({
-		cwd = vim.w.cwd or vim.t.cwd or vim.fn.getcwd(),
-	})
-end, { desc = "file grep" })
-vim.keymap.set({ "n" }, "<leader>fG", function()
-	fzf.live_grep({
-		cwd = vim.fn.getcwd(),
-	})
-end, { desc = "file grep (global)" })
-vim.keymap.set({ "n" }, "<leader>/", function()
-	fzf.grep({
-		cwd = vim.w.cwd or vim.t.cwd or vim.fn.getcwd(),
-		search = vim.fn.expand("<cword>"),
-	})
-end, { desc = "file grep" })
-vim.keymap.set({ "v" }, "<leader>fg", function()
-	fzf.grep_visual({
-		cwd = vim.w.cwd or vim.t.cwd or vim.fn.getcwd(),
-	})
-end, { desc = "file grep" })
-vim.keymap.set({ "v" }, "<leader>fG", function()
-	fzf.grep_visual({
-		cwd = vim.fn.getcwd(),
-	})
-end, { desc = "file grep (global)" })
-
--- git blame
-vim.keymap.set({ "n" }, "<leader>gb", function()
-	fzf.git_blame()
-end, { desc = "git commits for lines" })
-
--- global (gtags/ctags based) definitions and references
-vim.keymap.set({ "n" }, "<leader>fd", function()
-	fzf.grep({
-		cmd = "global -d --result=grep",
-		silent = true,
-		winopts = {
-			title = " Global Definitions ",
-		},
-		search = vim.fn.expand("<cword>"),
-	})
-end, { desc = "global definitions" })
-vim.keymap.set({ "v" }, "<leader>fd", function()
-	fzf.grep({
-		cmd = "global -d --result=grep",
-		silent = true,
-		winopts = {
-			title = " Global Definitions ",
-		},
-		search = utils.get_visual_selection(),
-	})
-end, { desc = "global definitions" })
-vim.keymap.set({ "n" }, "<leader>fr", function()
-	fzf.grep({
-		cmd = "global -r --result=grep",
-		silent = true,
-		winopts = {
-			title = " Global References ",
-		},
-		search = vim.fn.expand("<cword>"),
-	})
-end, { desc = "global references" })
-vim.keymap.set({ "v" }, "<leader>fr", function()
-	fzf.grep({
-		cmd = "global -r --result=grep",
-		silent = true,
-		winopts = {
-			title = " Global References ",
-		},
-		search = utils.get_visual_selection(),
-	})
-end, { desc = "global references" })
-
--- zoekt (aka source graph)
-vim.keymap.set("n", "<leader>sg", function()
-	fzf.live_grep({
-		cmd = "zoekt -index_dir .zoekt",
-		silent = true,
-		winopts = {
-			title = " Source Graph ",
-		},
-	})
-end, { desc = "source graph code search" })
-vim.keymap.set("v", "<leader>sg", function()
-	fzf.grep({
-		cmd = "zoekt -index_dir .zoekt",
-		silent = true,
-		winopts = {
-			title = " Source Graph ",
-		},
-		search = utils.get_visual_selection(),
-	})
-end, { desc = "source graph code search" })
-
--- git diff or status
-vim.keymap.set("n", "<leader>gs", function()
-	fzf.git_status({
-		winopts = {
-			preview = { layout = "vertical", vertical = "down:75%" },
-		},
-	})
-end, { desc = "git diff" })
-vim.keymap.set("n", "<leader>gd", function()
-	fzf.git_diff({
-		winopts = {
-			preview = { layout = "vertical", vertical = "down:75%" },
-		},
-	})
-end, { desc = "git diff" })
