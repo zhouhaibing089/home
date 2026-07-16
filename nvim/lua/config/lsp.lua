@@ -41,16 +41,19 @@ vim.keymap.set("n", "<leader>f", function()
 	conform.format({ lsp_fallback = true })
 end, { desc = "lsp format" })
 
+local servers = require("mason-lspconfig").get_installed_servers()
+
 -- set capabilities for all installed lsp servers
 local capabilities = require("blink.cmp").get_lsp_capabilities({
 	-- workspace/didChangeWatchedFiles can cause poor performance
 	workspace = nil,
 })
-for _, server in ipairs(require("mason-lspconfig").get_installed_servers()) do
+for _, server in ipairs(servers) do
 	vim.lsp.config(server, {
 		capabilities = capabilities,
 	})
 end
+
 -- vim global variable is implicit
 vim.lsp.config("lua_ls", {
 	settings = {
@@ -58,6 +61,24 @@ vim.lsp.config("lua_ls", {
 			diagnostics = {
 				globals = { "vim" },
 			},
+		},
+	},
+})
+-- gopls root dir
+local gopls_root_dir = assert(vim.lsp.config.gopls.root_dir)
+vim.lsp.config("gopls", {
+	root_dir = function(bufnr, on_dir)
+		local file = vim.api.nvim_buf_get_name(bufnr)
+		local root = vim.fs.root(file, "pyproject.toml")
+		if root then
+			on_dir(root)
+		else
+			gopls_root_dir(bufnr, on_dir)
+		end
+	end,
+	settings = {
+		gopls = {
+			expandWorkspaceToModule = false,
 		},
 	},
 })
@@ -71,3 +92,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end
 	end,
 })
+
+-- enable all installed servers
+for _, server in ipairs(servers) do
+	vim.lsp.enable(server)
+end
