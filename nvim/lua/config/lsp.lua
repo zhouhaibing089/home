@@ -2,6 +2,9 @@ local fzf = require("fzf-lua")
 local utils = require("fzf-lua.utils")
 local conform = require("conform")
 
+-- disable lsp logging by default
+vim.lsp.log.set_level("OFF")
+
 -- These are the most significant keybindings, so making it short
 vim.keymap.set("n", "<leader>d", fzf.lsp_definitions, { desc = "definitions" })
 vim.keymap.set("n", "<leader>D", fzf.lsp_declarations, { desc = "declarations" })

@@ -20,11 +20,10 @@ vim.api.nvim_create_autocmd("VimEnter", {
 		local arg = vim.fn.argv(0)
 		if arg ~= "" and vim.fn.isdirectory(arg) == 1 then
 			vim.cmd.tcd(arg)
-			fzf.vcs_files({
+			fzf.files({
 				cwd_prompt = false,
 				cwd_header = false,
 				prompt = files_prompt(),
-				git_icons = false,
 			})
 		end
 	end,
@@ -34,11 +33,10 @@ vim.api.nvim_create_autocmd("TabNewEntered", {
 		local name = vim.api.nvim_buf_get_name(0)
 		if name ~= "" and vim.fn.isdirectory(name) == 1 then
 			vim.cmd.tcd(name)
-			fzf.vcs_files({
+			fzf.files({
 				cwd_prompt = false,
 				cwd_header = false,
 				prompt = files_prompt(),
-				git_icons = false,
 			})
 		end
 	end,
@@ -46,43 +44,39 @@ vim.api.nvim_create_autocmd("TabNewEntered", {
 
 -- find files
 vim.keymap.set({ "n" }, "<leader>ff", function()
-	fzf.vcs_files({
+	fzf.files({
 		cwd = vim.w.cwd or vim.t.cwd or vim.fn.getcwd(),
 		cwd_prompt = false,
 		cwd_header = false,
 		prompt = files_prompt(vim.w.cwd or vim.t.cwd),
-		git_icons = false,
 	})
 end, { desc = "find files" })
 vim.keymap.set({ "n" }, "<leader>fF", function()
-	fzf.vcs_files({
+	fzf.files({
 		cwd = vim.fn.getcwd(),
 		cwd_prompt = false,
 		cwd_header = false,
 		prompt = files_prompt(),
-		git_icons = false,
 	})
 end, { desc = "find files (global)" })
 vim.keymap.set({ "v" }, "<leader>ff", function()
 	local query = vim.fn.simplify((utils.get_visual_selection()))
-	fzf.vcs_files({
+	fzf.files({
 		cwd = vim.w.cwd or vim.t.cwd or vim.fn.getcwd(),
 		cwd_prompt = false,
 		cwd_header = false,
 		prompt = files_prompt(vim.w.cwd or vim.t.cwd),
 		query = query:gsub("^([%.%.%/|%.%/]+)", ""),
-		git_icons = false,
 	})
 end, { desc = "find files" })
 vim.keymap.set({ "v" }, "<leader>fF", function()
 	local query = vim.fn.simplify((utils.get_visual_selection()))
-	fzf.vcs_files({
+	fzf.files({
 		cwd = vim.fn.getcwd(),
 		cwd_prompt = false,
 		cwd_header = false,
 		prompt = files_prompt(),
 		query = query:gsub("^([%.%.%/|%.%/]+)", ""),
-		git_icons = false,
 	})
 end, { desc = "find files (global)" })
 vim.keymap.set("n", "<leader>fb", function()
