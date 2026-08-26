@@ -57,7 +57,7 @@ for _, server in ipairs(servers) do
 	})
 end
 
--- vim global variable is implicit
+-- lua_ls
 vim.lsp.config("lua_ls", {
 	settings = {
 		Lua = {
@@ -67,23 +67,27 @@ vim.lsp.config("lua_ls", {
 		},
 	},
 })
--- gopls root dir
-local gopls_root_dir = assert(vim.lsp.config.gopls.root_dir)
+-- gopls
 vim.lsp.config("gopls", {
-	root_dir = function(bufnr, on_dir)
-		local file = vim.api.nvim_buf_get_name(bufnr)
-		local root = vim.fs.root(file, "pyproject.toml")
-		if root then
-			on_dir(root)
-		else
-			gopls_root_dir(bufnr, on_dir)
-		end
-	end,
 	settings = {
 		gopls = {
 			expandWorkspaceToModule = false,
 		},
 	},
+})
+-- terraformls
+vim.lsp.config("terraformls", {
+	root_dir = function(bufnr, on_dir)
+		local file = vim.api.nvim_buf_get_name(bufnr)
+		local root = vim.fs.root(file, {
+			".terraform", -- terraform workspace
+			"main.tf", -- terraform module
+			".git", -- repository
+		})
+		if root then
+			on_dir(root)
+		end
+	end,
 })
 
 -- disable semanticTokensProvider for terraformls as there is currently a bug
