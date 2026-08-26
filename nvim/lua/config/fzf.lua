@@ -113,8 +113,14 @@ end, { desc = "file grep (global)" })
 
 -- git blame
 vim.keymap.set({ "n" }, "<leader>gb", function()
-	fzf.git_blame()
-end, { desc = "git commits for lines" })
+	fzf.git_blame({
+		keymap = {
+			fzf = {
+				["load"] = string.format("pos(%d)", vim.fn.line(".")),
+			},
+		},
+	})
+end, { desc = "git blame" })
 
 -- global (gtags/ctags based) definitions and references
 vim.keymap.set({ "n" }, "<leader>fd", function()
