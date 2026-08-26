@@ -116,7 +116,7 @@ vim.keymap.set({ "n" }, "<leader>gb", function()
 	fzf.git_blame({
 		keymap = {
 			fzf = {
-				["load"] = string.format("pos(%d)", vim.fn.line(".")),
+				["load"] = string.format("pos(%d)+offset-middle", vim.fn.line(".")),
 			},
 		},
 	})
