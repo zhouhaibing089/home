@@ -20,6 +20,8 @@ return {
 			},
 			fzf = {
 				true,
+				["ctrl-d"] = "preview-page-down",
+				["ctrl-u"] = "preview-page-up",
 				["ctrl-j"] = "down",
 				["ctrl-k"] = "up",
 			},
