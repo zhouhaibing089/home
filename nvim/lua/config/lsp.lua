@@ -78,15 +78,9 @@ vim.lsp.config("gopls", {
 -- terraformls
 vim.lsp.config("terraformls", {
 	root_dir = function(bufnr, on_dir)
+		-- always use current directory as root
 		local file = vim.api.nvim_buf_get_name(bufnr)
-		local root = vim.fs.root(file, {
-			".terraform", -- terraform workspace
-			"main.tf", -- terraform module
-			".git", -- repository
-		})
-		if root then
-			on_dir(root)
-		end
+		on_dir(vim.fs.dirname(file))
 	end,
 })
 
