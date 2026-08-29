@@ -86,8 +86,9 @@ fi
 
 ZSH_THEME_GIT_PROMPT_PREFIX=' %F{green}('
 ZSH_THEME_GIT_PROMPT_SUFFIX=')%f'
-PROMPT='%F{blue}%~%f$(git_prompt_info) %# '
+PROMPT='%# %F{blue}%~%f$(git_prompt_info) '
 RPROMPT='[%D{%H:%M:%S}]'
+ZLE_RPROMPT_INDENT=0
 
 unsetopt share_history
 
