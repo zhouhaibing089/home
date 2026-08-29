@@ -35,19 +35,13 @@ alias tmux='tmux -2'
 
 # Path to your oh-my-zsh installation.
 export ZSH="${HOME}/.oh-my-zsh"
-export SOLARIZED_THEME=dark
 export EDITOR=vim
 
-if [[ ${ZED_TERM} != "true" && ${VSCODE_INJECTION} != "1" ]]; then
-  ZSH_THEME="blinks"
-fi
-
+plugins=(git)
 if [[ $(uname) == "Linux" ]]; then
   eval $(dircolors ${HOME}/.dircolors.dark)
-  plugins=(git kube-ps1)
 else
   eval $(gdircolors ${HOME}/.dircolors.dark)
-  plugins=(git kube-ps1)
 fi
 
 if [[ ${TMUX} ]]; then
@@ -88,10 +82,12 @@ source $ZSH/oh-my-zsh.sh
 type k &>/dev/null
 if [ $? -eq 0 ]; then
   echo "k is aliased"
-else
-  PROMPT=$PROMPT'$(kube_ps1) '
-  RPROMPT='[%*]'
 fi
+
+ZSH_THEME_GIT_PROMPT_PREFIX=' %F{green}('
+ZSH_THEME_GIT_PROMPT_SUFFIX=')%f'
+PROMPT='%F{blue}%~%f$(git_prompt_info) %# '
+RPROMPT='[%D{%H:%M:%S}]'
 
 unsetopt share_history
 
