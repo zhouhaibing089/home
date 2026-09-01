@@ -79,14 +79,15 @@ fi
 
 source $ZSH/oh-my-zsh.sh
 
+PROMPT='%#'
 type k &>/dev/null
 if [ $? -eq 0 ]; then
-  echo "k is aliased"
+  PROMPT='%F{blue}%B%U%#%u%b%f'
 fi
 
 ZSH_THEME_GIT_PROMPT_PREFIX=' %F{green}('
 ZSH_THEME_GIT_PROMPT_SUFFIX=')%f'
-PROMPT='%# %F{blue}%~%f$(git_prompt_info) '
+PROMPT+=' %F{magenta}%~%f$(git_prompt_info) '
 RPROMPT='[%D{%H:%M:%S}]'
 ZLE_RPROMPT_INDENT=0
 
