@@ -18,6 +18,7 @@ ln -s $(pwd)/nvim/init.lua ${HOME}/.config/nvim/init.lua
 rm -drf ${HOME}/.config/nvim/lua
 ln -s $(pwd)/nvim/lua ${HOME}/.config/nvim/lua
 rm -drf ${HOME}/.config/nvim/after
+ln -s $(pwd)/nvim/after ${HOME}/.config/nvim/after
 
 # tmux
 rm -f ${HOME}/.tmux.conf && ln -s $(pwd)/.tmux.conf ${HOME}/.tmux.conf

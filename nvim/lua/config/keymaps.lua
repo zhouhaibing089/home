@@ -90,9 +90,6 @@ vim.keymap.set("n", "<leader>tp", tab_cwd, { desc = "set tab local cwd" })
 vim.keymap.set("n", "<leader>fp", tab_cwd, { desc = "set tab local cwd" })
 vim.keymap.set("n", "<leader>wp", function()
 	if vim.w.cwd then
-		if not vim.t.cwd then
-			vim.t.cwd = vim.w.cwd
-		end
 		vim.w.cwd = nil
 	else
 		local cwd = vim.fn.expand("%:p:.:h")
@@ -103,6 +100,3 @@ vim.keymap.set("n", "<leader>wp", function()
 	end
 	vim.cmd("redrawstatus")
 end, { desc = "set tab local cwd" })
-
--- reflow around paragraph
-vim.keymap.set("n", "<leader>w", "gqap")
