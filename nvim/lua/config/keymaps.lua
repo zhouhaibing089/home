@@ -103,3 +103,6 @@ vim.keymap.set("n", "<leader>wp", function()
 	end
 	vim.cmd("redrawstatus")
 end, { desc = "set tab local cwd" })
+
+-- reflow around paragraph
+vim.keymap.set("n", "<leader>w", "gqap")

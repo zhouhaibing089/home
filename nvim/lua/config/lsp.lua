@@ -82,6 +82,11 @@ vim.lsp.config("terraformls", {
 		local file = vim.api.nvim_buf_get_name(bufnr)
 		on_dir(vim.fs.dirname(file))
 	end,
+	capabilities = {
+		experimental = {
+			showReferencesCommandId = false,
+		},
+	},
 })
 
 -- disable semanticTokensProvider for terraformls as there is currently a bug

@@ -17,6 +17,7 @@ vim.opt.title = true
 vim.opt.signcolumn = "yes:1"
 vim.opt.showmode = false
 vim.opt.showtabline = 2
+vim.opt.spell = true
 
 -- disable netrw
 vim.g.loaded_netrw = 1

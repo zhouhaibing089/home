@@ -20,11 +20,13 @@ vim.api.nvim_create_autocmd("VimEnter", {
 		local arg = vim.fn.argv(0)
 		if arg ~= "" and vim.fn.isdirectory(arg) == 1 then
 			vim.cmd.tcd(arg)
-			fzf.files({
-				cwd_prompt = false,
-				cwd_header = false,
-				prompt = files_prompt(),
-			})
+			vim.schedule(function()
+				fzf.files({
+					cwd_prompt = false,
+					cwd_header = false,
+					prompt = files_prompt(),
+				})
+			end)
 		end
 	end,
 })
@@ -33,11 +35,13 @@ vim.api.nvim_create_autocmd("TabNewEntered", {
 		local name = vim.api.nvim_buf_get_name(0)
 		if name ~= "" and vim.fn.isdirectory(name) == 1 then
 			vim.cmd.tcd(name)
-			fzf.files({
-				cwd_prompt = false,
-				cwd_header = false,
-				prompt = files_prompt(),
-			})
+			vim.schedule(function()
+				fzf.files({
+					cwd_prompt = false,
+					cwd_header = false,
+					prompt = files_prompt(),
+				})
+			end)
 		end
 	end,
 })
