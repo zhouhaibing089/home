@@ -48,8 +48,11 @@ local servers = require("mason-lspconfig").get_installed_servers()
 
 -- set capabilities for all installed lsp servers
 local capabilities = require("blink.cmp").get_lsp_capabilities({
-	-- workspace/didChangeWatchedFiles can cause poor performance
-	workspace = nil,
+	workspace = {
+		didChangeWatchedFiles = {
+			dynamicRegistration = false,
+		},
+	},
 })
 for _, server in ipairs(servers) do
 	vim.lsp.config(server, {
