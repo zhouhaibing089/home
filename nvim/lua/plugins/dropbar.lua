@@ -46,7 +46,7 @@ return {
 							end
 							local name = vim.api.nvim_buf_get_name(buf)
 							-- iterate through window local and tab local cwd
-							for _, cwd in ipairs({ vim.w.cwd, vim.t.cwd }) do
+							for _, cwd in ipairs({ vim.w.cwd or false, vim.t.cwd or false }) do
 								if cwd then
 									-- if name starts with cwd
 									local root = vim.fs.abspath(cwd)
